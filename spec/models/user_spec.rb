@@ -71,4 +71,28 @@ describe User, :type => :model do
       expect(user.valid?).to be(true)
     end
   end
+
+  context "relations" do
+    it "should destroy dependent movies when destroyed" do
+      user = create(:user)
+      movie = create(:movie, user: user)
+
+      expect(Movie.count).to be(1)
+
+      user.destroy
+
+      expect(Movie.count).to be(0)
+    end
+
+    it "should destroy dependent ratings when destroyed" do
+      user = create(:user)
+      rating = create(:rating, user: user)
+
+      expect(Rating.count).to be(1)
+
+      user.destroy
+
+      expect(Rating.count).to be(0)
+    end
+  end
 end

@@ -31,4 +31,17 @@ describe Movie, :type => :model do
       expect(movie.valid?).to be(true)
     end
   end
+
+  context "relations" do
+    it "should destroy dependent ratings when destroyed" do
+      movie = create(:movie)
+      rating = create(:rating, movie: movie)
+
+      expect(Rating.count).to be(1)
+
+      movie.destroy
+
+      expect(Rating.count).to be(0)
+    end
+  end
 end
