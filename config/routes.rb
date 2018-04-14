@@ -5,7 +5,11 @@ Rails.application.routes.draw do
       # Resources
       resources :ratings
       resources :users
-      resources :movies
+      resources :movies do
+        collection do
+          get 'user_movies'
+        end
+      end
       resources :categories
 
       # Authentication

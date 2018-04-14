@@ -9,10 +9,19 @@ module Api::V1
         @movies = search(Movie.all)
         @movies = present(@movies)
 
-        @user_movies = search(current_user.movies) if current_user
+        render json: @movies   
+    end
+
+    def user_movies
+      if current_user
+        @user_movies = search(current_user.movies)
         @user_movies = present(@user_movies)
 
-        render json: {movies: @movies, user_movies: @user_movies}    
+        render json: @user_movies
+      else
+        render json: { error: "You must be logged in to view your movies"}.to_json,
+                       status: :unauthorized
+      end
     end
 
     # GET /movies/1
@@ -55,7 +64,7 @@ module Api::V1
       # Only movie owners can update/destroy the movies
       def ensure_ownership
         if current_user != @movie.user
-          render json: {error: "It's not your movie!"}.to_json, status: :unauthorized
+          render json: {error: "It's not your movie"}.to_json, status: :unauthorized
           return
         end
       end
@@ -75,14 +84,14 @@ module Api::V1
       end
 
       def present(movies)
-        jmovies = movies.to_json(
-                                  include:
-                                    {
-                                      category: { only: :title},
-                                      user:     { only: :username},
-                                    },
-                                  methods: :avg_rating
-                                )
+        json_movies = movies.to_json(
+                                      include:
+                                        {
+                                          category: { only: :title},
+                                          user:     { only: :username},
+                                        },
+                                      methods: :avg_rating
+                                    )
       end
   end
 end
