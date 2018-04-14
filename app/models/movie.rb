@@ -38,9 +38,9 @@ class Movie < ApplicationRecord
 
   # Methods
   def avg_rating
-    avg = 0
-    sum = ratings.map(&:rate).reduce(0, :+)
-    avg = sum.to_f / ratings.count if ratings.any?
+    avg = 0.0
+    sum = ratings.map(&:rate).reduce(0.0, :+)
+    avg = sum / ratings.count if ratings.any?
     avg
   end
 end

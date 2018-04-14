@@ -1,7 +1,7 @@
 module Api::V1
   class MoviesController < ApplicationController
     before_action :set_movie        , only: [:show, :update, :destroy]
-    before_action :authenticate_user, only: [:create, :update, :destroy]
+    before_action :authenticate_user, only: [:create, :update, :destroy, :user_movies]
     before_action :ensure_ownership , only: [:update, :destroy]
 
     # GET /movies
@@ -13,15 +13,10 @@ module Api::V1
     end
 
     def user_movies
-      if current_user
         @user_movies = search(current_user.movies)
         @user_movies = present(@user_movies)
 
         render json: @user_movies
-      else
-        render json: { error: "You must be logged in to view your movies"}.to_json,
-                       status: :unauthorized
-      end
     end
 
     # GET /movies/1
@@ -35,7 +30,7 @@ module Api::V1
       @movie = Movie.new(movie_params)
 
       if @movie.save
-        render json: @movie, status: :created, location: @movie
+        render json: @movie, status: :created
       else
         render json: @movie.errors, status: :unprocessable_entity
       end
@@ -64,7 +59,7 @@ module Api::V1
       # Only movie owners can update/destroy the movies
       def ensure_ownership
         if current_user != @movie.user
-          render json: {error: "It's not your movie"}.to_json, status: :unauthorized
+          render json: {error: "It's not your movie"}.to_json, status: :forbidden
           return
         end
       end

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Rating, :type => :model do
+describe Rating, :type => :model do
   context "validations" do
 
     it "shouldn't create rating with blank movie" do

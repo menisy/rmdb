@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Movie, :type => :model do
+describe Movie, :type => :model do
   context "validations" do
     it "shouldn't create movie with blank title" do
       movie = build(:movie, title: '')

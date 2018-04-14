@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe User, :type => :model do
+describe User, :type => :model do
   context "validations" do
     it "shouldn't create user with blank email" do
       user = build(:user, email: '')

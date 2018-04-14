@@ -2,6 +2,7 @@ module Api::V1
   class RatingsController < ApplicationController
     before_action :set_rating       , only: [:show, :update, :destroy]
     before_action :authenticate_user, only: [:create, :update, :destroy]
+    before_action :ensure_ownership , only: [:update, :destroy]
 
     # GET /ratings
     def index
@@ -20,7 +21,7 @@ module Api::V1
       @rating = Rating.new(rating_params)
 
       if @rating.save
-        render json: @rating, status: :created, location: @rating
+        render json: @rating, status: :created
       else
         render json: @rating.errors, status: :unprocessable_entity
       end
@@ -49,6 +50,14 @@ module Api::V1
       # Only allow a trusted parameter "white list" through.
       def rating_params
         params.require(:rating).permit(:rate, :user_id, :movie_id)
+      end
+
+      # Only rating owners can update/destroy the ratings
+      def ensure_ownership
+        if current_user != @rating.user
+          render json: {error: "It's not your rating"}.to_json, status: :forbidden
+          return
+        end
       end
   end
 end
