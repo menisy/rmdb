@@ -2,12 +2,14 @@ module Api::V1
   class MoviesController < ApplicationController
     before_action :set_movie        , only: [:show, :update, :destroy]
     before_action :authenticate_user, only: [:create, :update, :destroy]
+    before_action :ensure_ownership , only: [:update, :destroy]
 
     # GET /movies
     def index
       @movies = Movie.all
-
-      render json: @movies
+      @my_movies = current_user.movies if current_user
+      
+      render json: {movies: @movies, my_movies: @my_movies}
     end
 
     # GET /movies/1
@@ -44,6 +46,14 @@ module Api::V1
       # Use callbacks to share common setup or constraints between actions.
       def set_movie
         @movie = Movie.find(params[:id])
+      end
+
+      # Only movie owners can update/destroy the movies
+      def ensure_ownership
+        if current_user != @movie.user
+          render json: {error: "It's not your movie!"}.to_json, status: :unauthorized
+          return
+        end
       end
 
       # Only allow a trusted parameter "white list" through.
