@@ -8,6 +8,12 @@ describe User, :type => :model do
       expect(user.errors[:email]).to include("can't be blank")
     end
 
+    it "shouldn't create user with invalid email" do
+      user = build(:user, email: 'notanemail')
+      user.valid?
+      expect(user.errors[:email]).to include("Invalid Email Address")
+    end
+
     it "shouldn't create user with blank username" do
       user = build(:user, username: '')
       user.valid?
