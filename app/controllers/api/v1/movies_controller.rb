@@ -6,10 +6,13 @@ module Api::V1
 
     # GET /movies
     def index
-      @movies = Movie.all
-      @my_movies = current_user.movies if current_user
-      
-      render json: {movies: @movies, my_movies: @my_movies}
+        @movies = search(Movie.all)
+        @movies = present(@movies)
+
+        @user_movies = search(current_user.movies) if current_user
+        @user_movies = present(@user_movies)
+
+        render json: {movies: @movies, user_movies: @user_movies}    
     end
 
     # GET /movies/1
@@ -59,6 +62,26 @@ module Api::V1
       # Only allow a trusted parameter "white list" through.
       def movie_params
         params.require(:movie).permit(:title, :description, :category_id, :user_id)
+      end
+
+      # Search through movies and present to include category title,
+      # user username, and avg_rating method
+      def search(movies)
+        movies.search(  params[:category],
+                        params[:rating],
+                        params[:text]
+                     )
+      end
+
+      def present(movies)
+        jmovies = movies.to_json(
+                                  include:
+                                    {
+                                      category: { only: :title},
+                                      user:     { only: :username},
+                                    },
+                                  methods: :avg_rating
+                                )
       end
   end
 end

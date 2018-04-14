@@ -1,9 +1,9 @@
 class Category < ApplicationRecord
 
-# Relations
+  # Relations
   has_many :movies
 
-# Validations
+  # Validations
   validates :title, presence: true
   validates :title, uniqueness: true
 end

@@ -1,10 +1,10 @@
 class Rating < ApplicationRecord
 
-# Relations
+  # Relations
   belongs_to :user
   belongs_to :movie
 
-# Validations
+  # Validations
   validates :user   , presence: true
   validates :movie  , presence: true
   validates :rate   , numericality: { greater_than: 0,
