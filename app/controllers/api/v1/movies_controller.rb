@@ -1,6 +1,7 @@
 module Api::V1
   class MoviesController < ApplicationController
-    before_action :set_movie, only: [:show, :update, :destroy]
+    before_action :set_movie        , only: [:show, :update, :destroy]
+    before_action :authenticate_user, only: [:create, :update, :destroy]
 
     # GET /movies
     def index
