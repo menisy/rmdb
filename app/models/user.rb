@@ -4,8 +4,8 @@ class User < ApplicationRecord
   has_secure_password
 
   # Relations
-  has_many :movies
-  has_many :ratings
+  has_many :movies, dependent: :destroy
+  has_many :ratings, dependent: :destroy
 
   # Validations
   validates :email    , presence: true, 

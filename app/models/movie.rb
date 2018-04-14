@@ -4,7 +4,7 @@ class Movie < ApplicationRecord
   # Relations
   belongs_to :category
   belongs_to :user
-  has_many :ratings, inverse_of: :movie
+  has_many :ratings, inverse_of: :movie, dependent: :destroy
 
   # Validations
   validates :title      , presence: true
