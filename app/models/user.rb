@@ -9,7 +9,9 @@ class User < ApplicationRecord
 
   # Validations
   validates :email    , presence: true, 
-                        uniqueness: true
+                        uniqueness: { case_sensitive: false}
   validates :username , presence: true,
                         uniqueness: { case_sensitive: false }
+
+  validates :password, length: { minimum: 6 }, allow_nil: true
 end

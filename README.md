@@ -6,7 +6,7 @@
 - [x] Create DB schema for models
 - [x] Add authentication functionality
 - [x] Create API endpoints
-- [ ] Add search and filter functionality Backend
+- [x] Add search and filter functionality Backend
 - [ ] Add API tests
 - [ ] Create client components
 - [ ] Add search and filter functionality Client

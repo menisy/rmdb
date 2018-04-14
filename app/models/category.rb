@@ -4,6 +4,6 @@ class Category < ApplicationRecord
   has_many :movies
 
   # Validations
-  validates :title, presence: true
-  validates :title, uniqueness: true
+  validates :title, presence: true,
+                    uniqueness: { case_sensitive: false }
 end

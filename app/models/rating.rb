@@ -7,7 +7,8 @@ class Rating < ApplicationRecord
   # Validations
   validates :user   , presence: true
   validates :movie  , presence: true
-  validates :rate   , numericality: { greater_than: 0,
+  validates :rate   , presence: true,
+                      numericality: { greater_than: 0,
                                       less_than_or_equal_to: 5,
                                       message: 'Rating should be between 1 and 5' }
   validates :user_id, uniqueness: { scope: :movie,

@@ -17,6 +17,7 @@ module Api::V1
 
     # GET /movies/1
     def show
+      @movie = present(@movie)
       render json: @movie
     end
 
