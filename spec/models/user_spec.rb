@@ -68,7 +68,7 @@ describe User, :type => :model do
 
     it "should create user with no errors" do
       user = create(:user)
-      expect(user.valid?).to be(true)
+      expect(user.valid?).to eq(true)
     end
   end
 
@@ -77,22 +77,22 @@ describe User, :type => :model do
       user = create(:user)
       movie = create(:movie, user: user)
 
-      expect(Movie.count).to be(1)
+      expect(Movie.count).to eq(1)
 
       user.destroy
 
-      expect(Movie.count).to be(0)
+      expect(Movie.count).to eq(0)
     end
 
     it "should destroy dependent ratings when destroyed" do
       user = create(:user)
       rating = create(:rating, user: user)
 
-      expect(Rating.count).to be(1)
+      expect(Rating.count).to eq(1)
 
       user.destroy
 
-      expect(Rating.count).to be(0)
+      expect(Rating.count).to eq(0)
     end
   end
 end

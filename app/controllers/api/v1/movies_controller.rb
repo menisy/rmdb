@@ -82,10 +82,9 @@ module Api::V1
         json_movies = movies.to_json(
                                       include:
                                         {
-                                          category: { only: :title},
-                                          user:     { only: :username},
-                                        },
-                                      methods: :avg_rating
+                                          category: { only: [:title, :id]},
+                                          user:     { only: :username}
+                                        }
                                     )
       end
   end

@@ -14,4 +14,9 @@ class Rating < ApplicationRecord
   validates :user_id, uniqueness: { scope: :movie,
                                       message: "You've already added a rating for this movie" }
 
+  # Callbacks
+  after_save do
+    self.movie.update_rating
+  end
+
 end

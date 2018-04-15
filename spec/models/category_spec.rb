@@ -24,7 +24,7 @@ describe Category, :type => :model do
 
     it "should create category with no errors" do
       category = create(:category)
-      expect(category.valid?).to be(true)
+      expect(category.valid?).to eq(true)
     end
   end
 
@@ -33,11 +33,11 @@ describe Category, :type => :model do
       category = create(:category)
       movie = create(:movie, category: category)
 
-      expect(Movie.count).to be(1)
+      expect(Movie.count).to eq(1)
 
       category.destroy
 
-      expect(Movie.count).to be(0)
+      expect(Movie.count).to eq(0)
     end
   end
 end

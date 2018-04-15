@@ -44,7 +44,7 @@ describe "Movies API requests" do
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
       # make sure no movies were created
-      expect(Movie.count).to be(0)
+      expect(Movie.count).to eq(0)
     end
 
     it 'should not be allowed to edit movie' do
@@ -60,13 +60,13 @@ describe "Movies API requests" do
     it 'should not be allowed to delete movie' do
       movie = create(:movie)
       # make sure movie exists before request
-      expect(Movie.count).to be(1)
+      expect(Movie.count).to eq(1)
       delete "/api/v1/movies/#{movie.id}"
       # test for the 401 status-code
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
       # make sure movie still exists after request
-      expect(Movie.count).to be(1)
+      expect(Movie.count).to eq(1)
     end
 
     it 'should not respond with user movies list' do
@@ -82,7 +82,7 @@ describe "Movies API requests" do
       movie = build(:movie)
       user = create(:user)
       # make sure no movies exist before request
-      expect(Movie.count).to be(0)
+      expect(Movie.count).to eq(0)
       # prepare request params
       params = { movie: JSON.parse(movie.to_json) }
       post "/api/v1/movies/", params: params, 
@@ -90,7 +90,7 @@ describe "Movies API requests" do
       # test for the 200 status-code
       expect(response).to be_success
       # make sure the movie is created
-      expect(Movie.count).to be(1)
+      expect(Movie.count).to eq(1)
     end
 
     it 'should not be allowed to edit a movie they do not own' do

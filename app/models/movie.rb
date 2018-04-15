@@ -37,10 +37,11 @@ class Movie < ApplicationRecord
   end
 
   # Methods
-  def avg_rating
-    avg = 0.0
-    sum = ratings.map(&:rate).reduce(0.0, :+)
-    avg = sum / ratings.count if ratings.any?
-    avg
+  def update_rating
+    sum = self.ratings.map(&:rate).reduce(0, :+)
+    avg = sum.to_f / self.ratings.count if ratings.any?
+    self.average_rating = avg
+    self.save
+    average_rating
   end
 end

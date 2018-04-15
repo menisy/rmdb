@@ -44,9 +44,9 @@ puts "Created 40 test movies"
 
 # Ratings
 # Just rate some of the movies, leave the rest for testing 
-movies[0..9].each_with_index do |movie, i|
+movies[0..19].each_with_index do |movie, i|
   rating = Rating.new
-  rating.user = i.even? ? user1 : user2
+  rating.user = i.even? ? user2 : user1
   rating.movie = movie
   rating.rate = rand(1..5)
   rating.save!

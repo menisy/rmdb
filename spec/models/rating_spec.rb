@@ -44,7 +44,7 @@ describe Rating, :type => :model do
 
     it "should create rating with no error" do
       rating = create(:rating)
-      expect(rating.valid?).to be(true)
+      expect(rating.valid?).to eq(true)
     end
   end
 end

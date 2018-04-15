@@ -18,7 +18,7 @@ describe "Ratings API requests" do
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
       # make sure no movies were created
-      expect(Rating.count).to be(0)
+      expect(Rating.count).to eq(0)
     end
 
     it 'should not be allowed to edit rating' do
@@ -34,13 +34,13 @@ describe "Ratings API requests" do
     it 'should not be allowed to delete rating' do
       rating = create(:rating)
       # make sure rating exists before request
-      expect(Rating.count).to be(1)
+      expect(Rating.count).to eq(1)
       delete "/api/v1/ratings/#{rating.id}"
       # test for the 401 status-code
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
       # make sure rating still exists after request
-      expect(Rating.count).to be(1)
+      expect(Rating.count).to eq(1)
     end
   end
 
@@ -49,7 +49,7 @@ describe "Ratings API requests" do
       rating = build(:rating)
       user = create(:user)
       # make sure no ratings exist before request
-      expect(Rating.count).to be(0)
+      expect(Rating.count).to eq(0)
       # prepare request params
       params = { rating: JSON.parse(rating.to_json) }
       post "/api/v1/ratings/", params: params, 
@@ -57,7 +57,7 @@ describe "Ratings API requests" do
       # test for the 200 status-code
       expect(response).to be_success
       # make sure the rating is created
-      expect(Rating.count).to be(1)
+      expect(Rating.count).to eq(1)
     end
 
     it 'should not be allowed to edit a rating they do not own' do

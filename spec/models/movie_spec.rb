@@ -28,20 +28,64 @@ describe Movie, :type => :model do
 
     it "should create movie with no errors" do
       movie = create(:movie)
-      expect(movie.valid?).to be(true)
+      expect(movie.valid?).to eq(true)
     end
   end
 
-  context "relations" do
+  context "ratings relation" do
     it "should destroy dependent ratings when destroyed" do
       movie = create(:movie)
       rating = create(:rating, movie: movie)
 
-      expect(Rating.count).to be(1)
+      expect(Rating.count).to eq(1)
 
       movie.destroy
 
-      expect(Rating.count).to be(0)
+      expect(Rating.count).to eq(0)
+    end
+
+    it "should update average_rating on new ratings" do
+      movie = create(:movie)
+
+      # check for default average_rating value
+      expect(movie.average_rating).to eq(0.0)
+
+      rating = create(:rating, movie: movie, rate: 3)
+
+      expect(movie.reload.average_rating).to eq(3.0)
+    end
+
+    it "should update average_rating on new ratings" do
+      movie = create(:movie)
+
+      # check for default average_rating value
+      expect(movie.average_rating).to eq(0.0)
+
+      rating = create(:rating, movie: movie, rate: 3)
+
+      expect(movie.reload.average_rating).to eq(3.0)
+    end
+
+    it "should update average_rating on updated ratings" do
+      movie = create(:movie)
+      # check for default average_rating value
+      expect(movie.average_rating).to eq(0.0)
+      rating = create(:rating, movie: movie, rate: 3)
+      # check average_rating after rating creation
+      expect(movie.reload.average_rating).to eq(3.0)
+      rating.update(rate: 5)
+      # check average_rating after rating update
+      expect(movie.reload.average_rating).to eq(5.0)
+    end
+
+    it "should have average rating for more than one rating" do
+      movie = create(:movie)
+      create(:rating, movie: movie.reload, rate: 1)
+      create(:rating, movie: movie.reload, rate: 2)
+      create(:rating, movie: movie.reload, rate: 3)
+      create(:rating, movie: movie.reload, rate: 4)
+      # check average_rating after multiple ratings
+      expect(movie.reload.average_rating).to eq(2.5)
     end
   end
 end
