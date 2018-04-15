@@ -23,3 +23,5 @@ client/node_modules
 .DS_Store
 yarn-debug.log*
 .yarn-integrity
+
+node_modules/

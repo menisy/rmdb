@@ -49,3 +49,6 @@ gem 'knock'
 
 # Search
 gem 'pg_search'
+
+# Cross origin requests
+gem 'rack-cors', :require => 'rack/cors'

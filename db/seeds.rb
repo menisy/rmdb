@@ -2,14 +2,14 @@ puts "Seeding DB with some test records"
 
 # Users
 user1 = User.new
-user1.email = 'user1@rmdb.com'
+user1.email = 'userone@gmail.com'
 user1.username = 'User1'
 user1.password = 'rmdbisthebest'
 user1.password_confirmation = 'rmdbisthebest'
 user1.save!
 
 user2 = User.new
-user2.email = 'user2@rmdb.com'
+user2.email = 'usertwo@gmail.com'
 user2.username = 'User2'
 user2.password = 'imsuchacooluser'
 user2.password_confirmation = 'imsuchacooluser'
@@ -30,7 +30,7 @@ puts "Created 2 test categories"
 
 # Movies
 movies = []
-for i in 1..20
+for i in 1..40
   movie = Movie.new
   movie.title = "Movie number #{i}"
   movie.description = "Description for movie number #{i}"
@@ -40,10 +40,10 @@ for i in 1..20
   movies << movie
 end
 
-puts "Created 20 test movies"
+puts "Created 40 test movies"
 
 # Ratings
-# Just rate half the movies, leave the rest for testing 
+# Just rate some of the movies, leave the rest for testing 
 movies[0..9].each_with_index do |movie, i|
   rating = Rating.new
   rating.user = i.even? ? user1 : user2

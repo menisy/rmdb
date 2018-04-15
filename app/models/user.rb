@@ -10,7 +10,7 @@ class User < ApplicationRecord
   # Validations
   validates :email    , presence: true, 
                         uniqueness: { case_sensitive: false}
-  validates_with EmailAddress::ActiveRecordValidator, field: :email
+  validates_with EmailAddress::ActiveRecordValidator, field: :email, host_validation: :syntax
 
   validates :username , presence: true,
                         uniqueness: { case_sensitive: false }

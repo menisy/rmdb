@@ -1,6 +1,7 @@
 module Api::V1
   class UsersController < ApplicationController
     before_action :set_user, only: [:show, :update, :destroy]
+    before_action :authenticate_user, only: [:me]
 
     # GET /users
     def index
@@ -12,6 +13,11 @@ module Api::V1
     # GET /users/1
     def show
       render json: @user
+    end
+
+    # GET /users/me
+    def me
+      render json: current_user.as_json(except: [:password_digest])
     end
 
     # POST /users
@@ -47,7 +53,7 @@ module Api::V1
 
       # Only allow a trusted parameter "white list" through.
       def user_params
-        params.require(:user).permit(:email, :username, :password_digest)
+        params.require(:user).permit(:email, :username, :password, :password_confirmation)
       end
   end
 end
