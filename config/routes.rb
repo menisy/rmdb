@@ -14,7 +14,9 @@ Rails.application.routes.draw do
           get 'user_movies'
         end
       end
-      resources :categories
+      resources :categories do
+        resources :movies, only: :index
+      end
 
       # Authentication
       post 'user_token' => 'user_token#create'

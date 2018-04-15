@@ -6,8 +6,12 @@ module Api::V1
 
     # GET /movies
     def index
-        @movies = search(Movie.all)
-        @movies = present(@movies)
+        if params[:category_id].present?
+          category = Category.find(params[:category_id])
+        end
+        @movies = category.movies if category
+        @movies ||= Movie.all
+        @movies = search(@movies)
 
         render json: @movies   
     end
@@ -21,7 +25,6 @@ module Api::V1
 
     # GET /movies/1
     def show
-      @movie = present(@movie)
       render json: @movie
     end
 
@@ -76,16 +79,6 @@ module Api::V1
                         params[:rating],
                         params[:text]
                      )
-      end
-
-      def present(movies)
-        json_movies = movies.to_json(
-                                      include:
-                                        {
-                                          category: { only: [:title, :id]},
-                                          user:     { only: :username}
-                                        }
-                                    )
       end
   end
 end
