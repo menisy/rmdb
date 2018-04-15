@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 class MovieForm extends Component {
   constructor(props) {
     super(props)
-    const { movie } = this.props
+    const { idea } = this.props
 
     this.state = {
-      title: movie.title,
-      description: movie.description
+      title: idea.title,
+      description: idea.description
     }
   }
 
@@ -29,7 +29,7 @@ class MovieForm extends Component {
             onChange={this.handleInput}
             ref={this.props.titleRef} />
           <textarea className="input" name="description"
-            placeholder="Describe your movie"
+            placeholder="Describe your idea"
             value={description}
             onChange={this.handleInput}></textarea>
         </form>

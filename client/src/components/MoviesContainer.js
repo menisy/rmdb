@@ -12,7 +12,6 @@ class MoviesContainer extends Component {
     const { movie } = this.props
 
     this.state = {
-      movies: [],
       editingMovieId: null,
       notification: '',
       transitionIn: false,
@@ -31,7 +30,7 @@ class MoviesContainer extends Component {
       }
     })
     .then(response => {
-      this.setState({movies: response.data})
+      this.props.setMovies(response.data)
     })
     .catch(error => console.log(error))
   }
@@ -40,7 +39,7 @@ class MoviesContainer extends Component {
     axios.post('/movies', {movie: {title: '', body: ''}})
     .then(response => {
       this.setState({
-        movies: [response.data, ...this.state.movies],
+        movies: [response.data, ...this.props.movies],
         editingMovieId: response.data.id
       })
     })
@@ -61,7 +60,7 @@ class MoviesContainer extends Component {
     axios.delete(`/movies/${id}`)
     .then(response => {
       this.setState({
-        movies: this.state.movies.filter(x => x.id !== id)
+        movies: this.props.movies.filter(x => x.id !== id)
       })
     }).catch((error, response) => console.log([error, response]))
   }
@@ -77,7 +76,8 @@ class MoviesContainer extends Component {
   }
 
   render() {
-    const { movies, editingMovieId, notification, transitionIn, sortBy } = this.state
+    const { editingMovieId, notification, transitionIn, sortBy } = this.state
+    const movies = this.props.movies
 
     return (
       <div>

@@ -56,7 +56,7 @@ class LoginForm extends Component {
     return (
       <div className="d-flex">
         <Notification in={this.state.transitionIn} notification={this.state.notification} color={this.state.notifColor} />
-        <form className="form-inline" onFocus={this.handleFocus} onSubmit={this.handleSubmit}>
+        <form className="form-inline " onFocus={this.handleFocus} onSubmit={this.handleSubmit}>
           <input className="form-control mr-sm-2" type="email" id="email" placeholder="email" aria-label="Email"></input>
           <input className="form-control mr-sm-2" type="password" id= "password" placeholder="password" aria-label="Password"></input>
           <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
