@@ -12,7 +12,7 @@ describe "Ratings API requests" do
     it 'should not be allowed to create a rating' do
       rating = build(:rating)
       params = { rating: JSON.parse(rating.to_json) }
-      post "/api/v1/ratings/", params: params
+      post api_v1_ratings_path, params: params
 
       # test for the 401 status-code
       expect(response).to be_unauthorized
@@ -25,7 +25,7 @@ describe "Ratings API requests" do
       rating = create(:rating)
       # prepare request params
       params = { rating: { description: 'such a cool rating' } }
-      put "/api/v1/ratings/#{rating.id}", params: params
+      put api_v1_rating_path(rating), params: params
       # test for the 401 status-code
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
@@ -35,7 +35,7 @@ describe "Ratings API requests" do
       rating = create(:rating)
       # make sure rating exists before request
       expect(Rating.count).to eq(1)
-      delete "/api/v1/ratings/#{rating.id}"
+      delete api_v1_rating_path(rating)
       # test for the 401 status-code
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
@@ -52,7 +52,7 @@ describe "Ratings API requests" do
       expect(Rating.count).to eq(0)
       # prepare request params
       params = { rating: JSON.parse(rating.to_json) }
-      post "/api/v1/ratings/", params: params, 
+      post api_v1_ratings_path, params: params, 
         headers: authenticated_header(user)
       # test for the 200 status-code
       expect(response).to be_success
@@ -68,7 +68,7 @@ describe "Ratings API requests" do
       # make sure rating rate is not 1 before request
       expect(rating.rate).not_to eq(1)
       # make request with authorized user2
-      put "/api/v1/ratings/#{rating.id}", params: params,
+      put api_v1_rating_path(rating), params: params,
         headers: authenticated_header(user2)
       resp = JSON.parse(response.body)
       # test for the 403 status-code
@@ -85,7 +85,7 @@ describe "Ratings API requests" do
       # make sure rating rate is not 1 before request
       expect(rating.rate).not_to eq(1)
       # make request with authorized user
-      put "/api/v1/ratings/#{rating.id}", params: params,
+      put api_v1_rating_path(rating), params: params,
         headers: authenticated_header(user)
       # test for the 200 status-code
       expect(response).to be_success
@@ -101,7 +101,7 @@ describe "Ratings API requests" do
       # make sure rating exists before request
       expect(Rating.count).to eq(1)
       # make request with authorized user2
-      delete "/api/v1/ratings/#{rating.id}",
+      delete api_v1_rating_path(rating),
         headers: authenticated_header(user2)
       resp = JSON.parse(response.body)
       # test for the 403 status-code
@@ -117,12 +117,32 @@ describe "Ratings API requests" do
       # make sure rating exists before request
       expect(Rating.count).to eq(1)
       # make request with authorized user
-      delete "/api/v1/ratings/#{rating.id}",
+      delete api_v1_rating_path(rating),
         headers: authenticated_header(user)
       # test for the 200 status-code
       expect(response).to be_success
       # make sure rating is deleted after request
       expect(Rating.count).to eq(0)
+    end
+  end
+
+  context "response format and data" do
+    it "should return movies count for each rating" do
+      movie1 = create(:movie)
+      movie2 = create(:movie)
+      movie3 = create(:movie)
+      rating1 = create(:rating, rate: 1, movie: movie1)
+      rating2 = create(:rating, rate: 1, movie: movie1.reload)
+      rating2 = create(:rating, rate: 2, movie: movie2)
+      rating2 = create(:rating, rate: 1, movie: movie3)
+
+      get movies_count_api_v1_ratings_path
+      # test for the 200 status-code
+      expect(response).to be_success
+      resp = JSON.parse(response.body)
+      # make correct number of movies returned for each rating value
+      expect(resp[0]["movies_count"]).to eq(2)
+      expect(resp[1]["movies_count"]).to eq(1)
     end
   end
 end

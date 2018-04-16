@@ -1,3 +1,9 @@
+puts "Clearing all DB Entries"
+Category.delete_all
+User.delete_all
+Movie.delete_all
+Rating.delete_all
+
 puts "Seeding DB with some test records"
 
 # Users

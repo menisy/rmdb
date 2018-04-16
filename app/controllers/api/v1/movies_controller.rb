@@ -1,15 +1,15 @@
 module Api::V1
   class MoviesController < ApplicationController
     before_action :set_movie        , only: [:show, :update, :destroy]
+    before_action :set_category     , only: [:index]
+    before_action :set_rating       , only: [:index]
     before_action :authenticate_user, only: [:create, :update, :destroy, :user_movies]
     before_action :ensure_ownership , only: [:update, :destroy]
 
     # GET /movies
     def index
-        if params[:category_id].present?
-          category = Category.find(params[:category_id])
-        end
-        @movies = category.movies if category
+        @movies = Movie.by_category(@category.id) if @category
+        @movies = (@movies || Movie).by_rating(@rating) if @rating
         @movies ||= Movie.all
         @movies = search(@movies)
 
@@ -56,6 +56,14 @@ module Api::V1
       # Use callbacks to share common setup or constraints between actions.
       def set_movie
         @movie = Movie.find(params[:id])
+      end
+
+      def set_rating
+        @rating = params[:rating] if params[:rating].present?
+      end
+
+      def set_category
+        @category = Category.find(params[:category_id]) if params[:category_id].present?
       end
 
       # Only movie owners can update/destroy the movies

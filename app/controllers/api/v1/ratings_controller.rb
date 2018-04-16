@@ -41,6 +41,15 @@ module Api::V1
       @rating.destroy
     end
 
+    # GET /ratings/movies_count
+    def movies_count
+      @ratings = []
+      (1..5).each do |rating|
+        @ratings << { title: "#{rating} Star", movies_count: Movie.by_rating(rating).count }
+      end
+      render json: @ratings
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_rating

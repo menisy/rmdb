@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # Resources
-      resources :ratings
+      resources :ratings do
+        collection do
+          get 'movies_count'
+        end
+      end
       resources :users do
         collection do
           get 'me'
@@ -14,9 +18,7 @@ Rails.application.routes.draw do
           get 'user_movies'
         end
       end
-      resources :categories do
-        resources :movies, only: :index
-      end
+      resources :categories
 
       # Authentication
       post 'user_token' => 'user_token#create'
