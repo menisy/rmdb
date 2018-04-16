@@ -22,7 +22,7 @@ class Movie < ApplicationRecord
   # Scopes
   # Scope movies by rating
   scope :by_rating, ->(rating) { 
-    where( average_rating: (rating..(rating+0.9))) }
+    where( average_rating: ((rating.to_f)..((rating.to_f)+0.9))) }
 
   # scope movies by category
   scope :by_category, ->(category_id) { 

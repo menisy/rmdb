@@ -45,7 +45,10 @@ module Api::V1
     def movies_count
       @ratings = []
       (1..5).each do |rating|
-        @ratings << { title: "#{rating} Star", movies_count: Movie.by_rating(rating).count }
+        @ratings << { title: "#{rating} Star",
+                      movies_count: Movie.by_rating(rating).count,
+                      rate: rating
+                    }
       end
       render json: @ratings
     end
