@@ -211,7 +211,21 @@ describe "Movies API requests" do
       resp = JSON.parse(response.body)
       # test for the 200 status-code
       expect(response).to be_success
-      expect(resp.count).to eq(3)
+      expect(resp.length).to eq(3)
+    end
+
+    it 'should redirect and respond with user movies list' do
+      user = create(:user)
+      movie1 = create(:movie, user: user)
+      movie2 = create(:movie, user: user)
+      movie3 = create(:movie, user: user)
+
+      get api_v1_movies_path(mine: true),
+        headers: authenticated_header(user)
+      resp = JSON.parse(response.body)
+      # test for the 200 status-code
+      expect(response).to be_success
+      expect(resp.length).to eq(3)
     end
   end
 end
