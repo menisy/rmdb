@@ -81,7 +81,7 @@ class MoviesContainer extends Component {
 
     return (
       <div>
-        <div>
+        <div className="position-fixed">
           <Notification in={transitionIn} notification={notification} />
         </div>
         {movies.map(movie => {

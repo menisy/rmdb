@@ -2,21 +2,22 @@ import React, { Component } from 'react'
 
 class FilterItem extends Component {
   constructor(props) {
-    super(props)
-    this.state = {
-      active: ''
-    }
-    
+    super(props)   
   }
 
   handleClick = () => { this.props.onClick(this.props.id) }
 
 
   render() {
+    const active = this.props.active
     return (
-      <a href="#" key={this.props.id+'ch'} className="nav-link" onClick={this.handleClick}>
-        {this.props.title}({this.props.count})
-      </a>
+      <li key={this.props.id} onClick={this.handleClick} 
+        className={`${active} list-group-item d-flex justify-content-between align-items-center`}>
+        <span href="#" key={this.props.id}  onClick={this.handleClick} className="">
+          {this.props.title}
+        </span>
+        <span className="badge badge-primary badge-pill">{this.props.count}</span>
+      </li>
     )
   }
 }

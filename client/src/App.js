@@ -11,7 +11,9 @@ class App extends Component {
 
     this.state = {
       signedIn: this.checkForToken(),
-      movies: []
+      movies: [],
+      activeCategory: '',
+      activeRating: ''
     }
     axios.defaults.baseURL = 'http://localhost:3001/api/v1'
   }
@@ -28,8 +30,10 @@ class App extends Component {
     this.setState({signedIn: status})
   }
 
-  fetchCategoryMovies = (id) => {
-    axios.get(`/categories/${id}/movies`, {
+  fetchMovies = () => {
+    const rating = this.state.activeRating
+    const category = this.state.activeCategory
+    axios.get(`/movies?category_id=${category}&rating=${rating}`, {
       params: {
         sort_by: this.state.sortBy
       }
@@ -40,6 +44,18 @@ class App extends Component {
     .catch(error => console.log(error))
   }
 
+  setRating = (rating) => {
+    this.setState({activeRating: rating}, ()=>{
+      this.fetchMovies()
+    })
+    
+  }
+
+  setCategory = (category) => {
+    this.setState({activeCategory: category}, ()=>{
+      this.fetchMovies()
+    })
+  }
   setMovies = (movies) => {
     this.setState({movies: movies})
   }
@@ -53,7 +69,9 @@ class App extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-3">
-                <Filter getCategoryMovies={this.fetchCategoryMovies}/>
+                <Filter moviesCount={this.state.movies.length} 
+                  category={this.setCategory}
+                  rating={this.setRating}/>
               </div>
               <div className="col-md-9">
                 <MoviesContainer movies={this.state.movies} setMovies={this.setMovies}/>

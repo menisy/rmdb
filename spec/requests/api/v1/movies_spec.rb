@@ -48,6 +48,7 @@ describe "Movies API requests" do
       pending "to be implemented"
     end
   end
+
   context "non logged in users" do
     it 'should respond with success' do
       movies = create_list(:movie, 10)
