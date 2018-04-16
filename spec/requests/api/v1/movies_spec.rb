@@ -7,6 +7,47 @@ def authenticated_header(user)
 end
 
 describe "Movies API requests" do
+  context "response format and data" do
+    it 'index action should return valid JSON' do
+      pending "to be implemented"
+    end
+
+    it 'show action should return valid JSON' do
+      pending "to be implemented"
+    end
+
+    it 'user_movies action should return valid JSON' do
+      pending "to be implemented"
+    end
+
+    it 'create action should return valid JSON' do
+      pending "to be implemented"
+    end
+
+    it 'update action should return valid JSON' do
+      pending "to be implemented"
+    end
+
+    it 'destroy action should return valid JSON' do
+      pending "to be implemented"
+    end
+
+    it 'should return all data that was set' do
+      pending "to be implemented"
+    end
+
+    it 'should return category along with each movie' do
+      pending "to be implemented"
+    end
+
+    it 'should return user along with each movie' do
+      pending "to be implemented"
+    end
+
+    it 'should return movies within a category' do
+      pending "to be implemented"
+    end
+  end
   context "non logged in users" do
     it 'should respond with success' do
       movies = create_list(:movie, 10)
@@ -17,7 +58,7 @@ describe "Movies API requests" do
 
     it 'should respond with movies list' do
       movies = create_list(:movie, 10)
-      get '/api/v1/movies'
+      get api_v1_movies_path
       resp = JSON.parse(response.body)
       # test for the 200 status-code
       expect(response).to be_success
@@ -27,7 +68,7 @@ describe "Movies API requests" do
 
     it 'should respond with single movie' do
       movie = create(:movie)
-      get "/api/v1/movies/#{movie.id}"
+      get api_v1_movie_path(movie)
       resp = JSON.parse(response.body)
       # test for the 200 status-code
       expect(response).to be_success
@@ -38,7 +79,7 @@ describe "Movies API requests" do
     it 'should not be allowed to create movie' do
       movie = build(:movie)
       params = { movie: JSON.parse(movie.to_json) }
-      post "/api/v1/movies/", params: params
+      post api_v1_movies_path, params: params
 
       # test for the 401 status-code
       expect(response).to be_unauthorized
@@ -61,7 +102,7 @@ describe "Movies API requests" do
       movie = create(:movie)
       # make sure movie exists before request
       expect(Movie.count).to eq(1)
-      delete "/api/v1/movies/#{movie.id}"
+      delete api_v1_movie_path(movie)
       # test for the 401 status-code
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
@@ -70,7 +111,7 @@ describe "Movies API requests" do
     end
 
     it 'should not respond with user movies list' do
-      get '/api/v1/movies/user_movies'
+      get user_movies_api_v1_movies_path
       # test for the 200 status-code
       expect(response).to be_unauthorized
       expect(response.body).to be_blank
@@ -85,7 +126,7 @@ describe "Movies API requests" do
       expect(Movie.count).to eq(0)
       # prepare request params
       params = { movie: JSON.parse(movie.to_json) }
-      post "/api/v1/movies/", params: params, 
+      post api_v1_movies_path, params: params, 
         headers: authenticated_header(user)
       # test for the 200 status-code
       expect(response).to be_success
@@ -101,7 +142,7 @@ describe "Movies API requests" do
       # make sure movie title is not editted title before request
       expect(movie.title).not_to eq('editted title')
       # make request with authorized user2
-      put "/api/v1/movies/#{movie.id}", params: params,
+      put api_v1_movie_path(movie), params: params,
         headers: authenticated_header(user2)
       resp = JSON.parse(response.body)
       # test for the 403 status-code
@@ -118,7 +159,7 @@ describe "Movies API requests" do
       # make sure movie title is not editted title before request
       expect(movie.title).not_to eq('editted title')
       # make request with authorized user
-      put "/api/v1/movies/#{movie.id}", params: params,
+      put api_v1_movie_path(movie), params: params,
         headers: authenticated_header(user)
       # test for the 200 status-code
       expect(response).to be_success
@@ -134,7 +175,7 @@ describe "Movies API requests" do
       # make sure movie exists before request
       expect(Movie.count).to eq(1)
       # make request with authorized user2
-      delete "/api/v1/movies/#{movie.id}",
+      delete api_v1_movie_path(movie),
         headers: authenticated_header(user2)
       resp = JSON.parse(response.body)
       # test for the 403 status-code
@@ -150,12 +191,26 @@ describe "Movies API requests" do
       # make sure movie exists before request
       expect(Movie.count).to eq(1)
       # make request with authorized user
-      delete "/api/v1/movies/#{movie.id}",
+      delete api_v1_movie_path(movie),
         headers: authenticated_header(user)
       # test for the 200 status-code
       expect(response).to be_success
       # make sure movie is deleted after request
       expect(Movie.count).to eq(0)
+    end
+
+    it 'should respond with user movies list' do
+      user = create(:user)
+      movie1 = create(:movie, user: user)
+      movie2 = create(:movie, user: user)
+      movie3 = create(:movie, user: user)
+
+      get user_movies_api_v1_movies_path,
+        headers: authenticated_header(user)
+      resp = JSON.parse(response.body)
+      # test for the 200 status-code
+      expect(response).to be_success
+      expect(resp.count).to eq(3)
     end
   end
 end

@@ -16,7 +16,6 @@ class Rating < ApplicationRecord
 
   # Callbacks
   after_save do
-    self.movie.update_rating
+    movie.update_rating
   end
-
 end

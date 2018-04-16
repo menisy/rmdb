@@ -18,30 +18,40 @@ class Movie < ApplicationRecord
       :title,
       :description
     ]
-  pg_search_scope :search_by_rating,
-    associated_against: {
-      ratings: [:rate]
-    }
-  pg_search_scope :search_by_category,
-    associated_against: {
-      category: [:title]
-    }
 
+  # Scopes
+  # Scope movies by rating
+  scope :by_rating, ->(rating) { 
+    where( average_rating: (rating..(rating+0.9))) }
+
+  # scope movies by category
+  scope :by_category, ->(category_id) { 
+    where(category_id: category_id) }
+  
   # Search and filters
-  def self.search(category, rating, text)
+  def self.search(text)
     results = order("created_at DESC")
-    results = results.search_by_category(category) if category.present?
-    results = results.search_by_rating(rating)     if rating.present?
-    results = results.search_full_text(text)       if text.present?
+    results = results.search_full_text(text) if text.present?
     results
   end
 
   # Methods
   def update_rating
-    sum = self.ratings.map(&:rate).reduce(0, :+)
-    avg = sum.to_f / self.ratings.count if ratings.any?
-    self.average_rating = avg
-    self.save
-    average_rating
+    sum = ratings.map(&:rate).reduce(0, :+)
+    avg = sum.to_f / ratings.count if ratings.any?
+    self.average_rating = avg.round(1)
+    save
+  end
+
+  # Override as_json to include category and user
+  def as_json(options = { })
+    # check for as_json(nil) and bypasses
+    # our default...
+    super((options || { }).merge({
+      include: {
+        category: { only: [ :title, :id ] },
+        user:     { only: :username }
+      }
+    }))
   end
 end

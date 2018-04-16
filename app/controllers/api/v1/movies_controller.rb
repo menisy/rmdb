@@ -18,7 +18,6 @@ module Api::V1
 
     def user_movies
         @user_movies = search(current_user.movies)
-        @user_movies = present(@user_movies)
 
         render json: @user_movies
     end
@@ -75,10 +74,7 @@ module Api::V1
       # Search through movies and present to include category title,
       # user username, and avg_rating method
       def search(movies)
-        movies.search(  params[:category],
-                        params[:rating],
-                        params[:text]
-                     )
+        movies.search(params[:text])
       end
   end
 end
