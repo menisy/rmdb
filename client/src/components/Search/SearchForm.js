@@ -21,18 +21,15 @@ class SearchForm extends Component {
     this.props.handleSearch(query)
   }
 
-
   render() {
-    const { title, description } = this.state
-
     return (
-      <div className="">
+      <div className="flex-sm-fill nav-item ml-sm-2">
         <form className="form-inline" onSubmit={this.handleSubmit}>
-          <input className="form-control mr-sm-2" type="search" 
+          <input className="form-control col-9 mr-xs-2" type="search" 
             placeholder="Search" aria-label="Search" 
             id="movies-search" onChange={this.handleChange}></input>
-          <button className="btn btn-outline-success my-2 my-sm-0" 
-            type="submit">Search</button>
+          <button className="btn btn-outline-success ml-2 my-2 my-sm-0 col-2" 
+            type="submit"><i className="fa fa-search"/></button>
         </form>
       </div>
     )

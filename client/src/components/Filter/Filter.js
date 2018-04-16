@@ -31,16 +31,16 @@ class Filter extends Component {
     const items = this.props.items
     const activeItem = this.props.activeItem
     return (
-      <div className="nav flex-column">
+      <div className="nav flex-column mb-2">
         <div className="nav-item">
           {title}
-          <div className="btn btn-outline-primary btn-sm float-right" onClick={this.handleReset}>
+          <div className="btn btn-outline-secondary btn-sm float-right" onClick={this.handleReset}>
             Reset
           </div>
         </div>
         <ul className="list-group mt-1">
           {items.map(item => {
-            const active = (item.id == activeItem) ? 'active' : ''
+            const active = (item.id === activeItem) ? 'active' : ''
             return(
                 <FilterItem key={item.id} id={item.id} title={item.title}
                   count={item.movies_count} onClick={this.handleClick}

@@ -27,7 +27,6 @@ class AppHeader extends Component {
     }else{
       loginForm = <UserNav username={this.state.username} />
     }
-    loginForm = <UserNav username="Sayed" />
 
     return (
       <div>
