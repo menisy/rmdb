@@ -13,7 +13,8 @@ class App extends Component {
       signedIn: this.checkForToken(),
       movies: [],
       activeCategory: '',
-      activeRating: ''
+      activeRating: '',
+      searchQuery: ''
     }
     axios.defaults.baseURL = 'http://localhost:3001/api/v1'
   }
@@ -33,7 +34,8 @@ class App extends Component {
   fetchMovies = () => {
     const rating = this.state.activeRating
     const category = this.state.activeCategory
-    axios.get(`/movies?category_id=${category}&rating=${rating}`, {
+    const searchQuery = this.state.searchQuery
+    axios.get(`/movies?category_id=${category}&rating=${rating}&text=${searchQuery}`, {
       params: {
         sort_by: this.state.sortBy
       }
@@ -45,16 +47,16 @@ class App extends Component {
   }
 
   setRating = (rating) => {
-    this.setState({activeRating: rating}, ()=>{
-      this.fetchMovies()
-    })
+    this.setState({activeRating: rating}, () => this.fetchMovies())
     
   }
 
   setCategory = (category) => {
-    this.setState({activeCategory: category}, ()=>{
-      this.fetchMovies()
-    })
+    this.setState({activeCategory: category}, () => this.fetchMovies())
+  }
+
+  setSearch = (searchQuery) => {
+    this.setState({searchQuery: searchQuery}, () => this.fetchMovies())
   }
   setMovies = (movies) => {
     this.setState({movies: movies})
@@ -74,7 +76,7 @@ class App extends Component {
                   setRating={this.setRating}/>
               </div>
               <div className="col-md-9">
-                <MoviesContainer movies={this.state.movies} setMovies={this.setMovies}/>
+                <MoviesContainer movies={this.state.movies} setSearch={this.setSearch} />
               </div>
             </div>
           </div>

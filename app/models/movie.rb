@@ -17,7 +17,10 @@ class Movie < ApplicationRecord
     against: [
       :title,
       :description
-    ]
+    ],
+    using:  {
+              :tsearch => { prefix: true }
+            }
 
   # Scopes
   # Scope movies by rating

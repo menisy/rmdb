@@ -3,13 +3,13 @@ import axios from 'axios'
 import Movie from './Movie'
 import MovieForm from './MovieForm'
 import Notification from '../Notification'
+import SearchForm from '../Search/SearchForm'
 import Sort from '../Sort'
 import headerDefaults from '../../headerDefaults'
 
 class MoviesContainer extends Component {
   constructor(props) {
     super(props)
-    const { movie } = this.props
 
     this.state = {
       editingMovieId: null,
@@ -20,19 +20,7 @@ class MoviesContainer extends Component {
   }
 
   componentDidMount() {
-    this.fetchMovies()
-  }
-
-  fetchMovies = () => {
-    axios.get('/movies', {
-      params: {
-        sort_by: this.state.sortBy
-      }
-    })
-    .then(response => {
-      this.props.setMovies(response.data)
-    })
-    .catch(error => console.log(error))
+    this.props.setSearch('')
   }
 
   addNewMovie = () => {
@@ -72,7 +60,11 @@ class MoviesContainer extends Component {
   }
 
   changeSort = (value) => {
-    this.setState({sortBy: value}, () => this.fetchMovies())
+    this.setState({sortBy: value}, () => this.props.fetchMovies())
+  }
+
+  handleSearch = (searchQuery) => {
+    this.props.setSearch(searchQuery)
   }
 
   render() {
@@ -84,6 +76,10 @@ class MoviesContainer extends Component {
         <div className="position-fixed">
           <Notification in={transitionIn} notification={notification} />
         </div>
+        <nav className="navbar navbar-light bg-light">
+          <SearchForm handleSearch={this.handleSearch}/>
+        </nav>
+
         {movies.map(movie => {
           if(editingMovieId === movie.id) {
             return (<MovieForm key={movie.id} movie={movie}
