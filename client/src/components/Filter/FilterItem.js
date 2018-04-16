@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class FilterItem extends Component {
   constructor(props) {
-    super(props)   
+    super(props)
   }
 
   handleClick = () => { this.props.onClick(this.props.id) }
@@ -11,7 +11,7 @@ class FilterItem extends Component {
   render() {
     const active = this.props.active
     return (
-      <li key={this.props.id} onClick={this.handleClick} 
+      <li key={this.props.id} onClick={this.handleClick}
         className={`${active} list-group-item d-flex justify-content-between align-items-center`}>
         <span href="#" key={this.props.id}  onClick={this.handleClick} className="">
           {this.props.title}

@@ -8,7 +8,7 @@ class Filter extends Component {
       title: '',
       items: [],
       activeItem: ''
-    }   
+    }
   }
 
   componentDidMount = () => {
@@ -48,7 +48,7 @@ class Filter extends Component {
               )
           })}
         </ul>
-      </div> 
+      </div>
     )
   }
 }

@@ -54,7 +54,6 @@ class App extends Component {
 
   setRating = (rating) => {
     this.setState({activeRating: rating}, () => this.fetchMovies())
-    
   }
 
   setCategory = (category) => {
