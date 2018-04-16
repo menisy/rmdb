@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Movie from './Movie'
 import MovieForm from './MovieForm'
-import Notification from './Notification'
-import Sort from './Sort'
-import headerDefaults from '../headerDefaults'
+import Notification from '../Notification'
+import Sort from '../Sort'
+import headerDefaults from '../../headerDefaults'
 
 class MoviesContainer extends Component {
   constructor(props) {

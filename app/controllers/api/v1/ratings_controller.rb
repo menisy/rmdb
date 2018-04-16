@@ -47,7 +47,7 @@ module Api::V1
       (1..5).each do |rating|
         @ratings << { title: "#{rating} Star",
                       movies_count: Movie.by_rating(rating).count,
-                      rate: rating
+                      id: rating # for selection purposes by front end
                     }
       end
       render json: @ratings

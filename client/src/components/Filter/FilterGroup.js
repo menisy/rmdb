@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import FilterItem from './FilterItem'
+import Filter from './Filter'
 
-class Filter extends Component {
+class FilterGroup extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -52,49 +52,40 @@ class Filter extends Component {
 
   handleCategoryClick = (category) => {
     this.setState({activeCategory: category})
-    this.props.category(category)
+    this.props.setCategory(category)
   }
 
   handleRatingClick = (rating) => {
     this.setState({activeRating: rating})
-    this.props.rating(rating)
+    this.props.setRating(rating)
+  }
+
+  handleCategoryReset = () => {
+    this.setState({activeCategory: ''})
+    this.props.setCategory('')
+  }
+
+  handleRatingReset = () => {
+    this.setState({activeRating: ''})
+    this.props.setRating('')
   }
 
   render() {
     const {categories, ratings, activeCategory, activeRating} = this.state
     return (
       <div className="filters">
-        <div className="nav flex-column">
-          <div className="nav-item">
-            Filter by Category
-          </div>
-          <ul className="list-group mt-2">
-            {categories.map(category => {
-              const active = (category.id == activeCategory) ? 'active' : ''
-              return(
-                  <FilterItem key={category.id} id={category.id} title={category.title}
-                    count={category.movies_count} onClick={this.handleCategoryClick} active={active}/>
-                )
-            })}
-          </ul>
-        </div> 
-        <div className="nav flex-column mt-3">
-          <div className="nav-item">
-            Filter by Rating
-          </div>
-          <ul className="list-group mt-2">
-            {ratings.map(rating => {
-              const active = (rating.rate == activeRating) ? 'active' : ''
-              return(
-                  <FilterItem key={rating.rate} id={rating.rate} title={rating.title}
-                    count={rating.movies_count} onClick={this.handleRatingClick} active={active}/>
-                )
-            })}
-          </ul>
-        </div>
+        <Filter title="Filter by Category" items={categories}
+          activeItem={activeCategory}
+          handleClick={this.handleCategoryClick}
+          handleReset={this.handleCategoryReset}/>
+        <div className="mt-4"></div>
+        <Filter title="Filter by Rating" items={ratings}
+          activeItem={activeRating}
+          handleClick={this.handleRatingClick}
+          handleReset={this.handleRatingReset}/>
       </div>
     )
   }
 }
 
-export default Filter
+export default FilterGroup

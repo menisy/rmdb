@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
 import AppHeader from './components/AppHeader'
-import MoviesContainer from './components/MoviesContainer'
-import Filter from './components/Filter'
+import MoviesContainer from './components/Movie/MoviesContainer'
+import FilterGroup from './components/Filter/FilterGroup'
 
 class App extends Component {
   constructor(props) {
@@ -69,9 +69,9 @@ class App extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-3">
-                <Filter moviesCount={this.state.movies.length} 
-                  category={this.setCategory}
-                  rating={this.setRating}/>
+                <FilterGroup moviesCount={this.state.movies.length} 
+                  setCategory={this.setCategory}
+                  setRating={this.setRating}/>
               </div>
               <div className="col-md-9">
                 <MoviesContainer movies={this.state.movies} setMovies={this.setMovies}/>
