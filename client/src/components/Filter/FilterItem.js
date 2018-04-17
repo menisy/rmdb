@@ -1,25 +1,15 @@
 import React, { Component } from 'react'
 
-class FilterItem extends Component {
-  constructor(props) {
-    super(props)
-  }
-
-  handleClick = () => { this.props.onClick(this.props.id) }
-
-
-  render() {
-    const active = this.props.active
-    return (
-      <li key={this.props.id} onClick={this.handleClick}
-        className={`${active} list-group-item d-flex justify-content-between align-items-center`}>
-        <span href="#" key={this.props.id}  onClick={this.handleClick} className="">
-          {this.props.title}
+const FilterItem = ({id, title, isActive, count, onClick = f => f}) => {
+  const active = (isActive) ? 'btn-outline-primary' : 'btn-outline-secondary'
+  return (
+      <li key={id} onClick={() => onClick(id)}
+        className={`${isActive} list-group-item d-flex justify-content-between align-items-center`}>
+        <span href="#" key={id} className="">
+          {title}
         </span>
-        <span className="badge badge-primary badge-pill">{this.props.count}</span>
+        <span className="badge badge-primary badge-pill">{count}</span>
       </li>
     )
-  }
 }
-
 export default FilterItem

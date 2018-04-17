@@ -23,13 +23,18 @@ class SearchForm extends Component {
 
   render() {
     return (
-      <div className="flex-sm-fill nav-item ml-sm-2">
+      <div className="nav-item ml-sm-2 my-2">
         <form className="form-inline" onSubmit={this.handleSubmit}>
-          <input className="form-control col-9 mr-xs-2" type="search"
-            placeholder="Search" aria-label="Search"
-            id="movies-search" onChange={this.handleChange}></input>
-          <button className="btn btn-outline-success ml-2 my-2 my-sm-0 col-2"
-            type="submit"><i className="fa fa-search"/></button>
+          <div className="input-group flex-sm-fill">
+            <input className="form-control col-12" type="search"
+              placeholder="Search" aria-label="Search"
+              id="movies-search" onChange={this.handleChange}></input>
+            <div className="input-group-append">
+              <div className="input-group-text">
+                <i className="fa fa-search"/>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     )

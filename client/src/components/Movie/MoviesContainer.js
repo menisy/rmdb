@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import Movie from './Movie'
+import MoviesList from './MoviesList'
 import MovieForm from './MovieForm'
-import Notification from '../Notification'
+import Notification from '../shared/Notification'
 import SearchForm from '../Search/SearchForm'
 import Sort from '../Sort'
 import headerDefaults from '../../headerDefaults'
-import Button from '../Button'
 
 class MoviesContainer extends Component {
   constructor(props) {
@@ -27,7 +26,7 @@ class MoviesContainer extends Component {
     this.props.setSearch('')
   }
 
-  addNewMovie = () => {
+  addNewMovie = (movie) => {
     axios.post('/movies', {movie: {title: '', body: ''}})
     .then(response => {
       this.setState({
@@ -71,50 +70,24 @@ class MoviesContainer extends Component {
     this.setState({searchQuery: searchQuery}, () => this.props.setSearch(searchQuery))
   }
 
-  handleUserMoviesClick = () => {
-    // Call searchQuery prop with mine set to true
-    this.setState({userMoviesActive: true, allMoviesActive: false},
-      () => this.props.setSearch(this.state.searchQuery, true))
-  }
-
-  handleAllMoviesClick = () => {
-    // Call searchQuery prop with mine set to false
-    this.setState({allMoviesActive: true, userMoviesActive: false},
-      () => this.props.setSearch(this.state.searchQuery, false))
-  }
-
   render() {
     const { editingMovieId, notification, transitionIn, sortBy } = this.state
     const movies = this.props.movies
-    var userButton = null
-    if(this.props.signedIn){
-      userButton = <Button title="Your Movies" handleClick={this.handleUserMoviesClick}
-                      isActive={this.state.userMoviesActive}/>
-    }
-
     return (
       <div className="mt-xs-2">
         <div className="position-fixed">
           <Notification in={transitionIn} notification={notification}/>
         </div>
         <nav className="nav nav-fill justify-content-end form-inline">
-          <Button title="All Movies" handleClick={this.handleAllMoviesClick}
-            isActive={this.state.allMoviesActive}/>
-          {userButton}
           <SearchForm handleSearch={this.handleSearch}/>
         </nav>
-        {movies.map(movie => {
-          if(editingMovieId === movie.id) {
-            return (<MovieForm key={movie.id} movie={movie}
-                      titleRef={input => this.title = input}
-                      updateMovie={this.updateMovie}
-                      resetNotification={this.resetNotification} />)
-          } else {
-            return (<Movie key={movie.id} movie={movie}
-                      onClick={this.enableEditing}
-                      onDelete={this.deleteMovie} />)
-          }
-        })}
+        <MoviesList movies={movies}
+                    onSearch={this.handleSearch}
+                    resetNotifiction={this.resetNotification}
+                    onNewMovie={this.addNewMovie}
+                    onEnableEditing={this.enableEditing}
+                    onUpdateMovie={this.updateMovie}
+                    onDeleteMovie={this.deleteMovie}/>
       </div>
     );
   }

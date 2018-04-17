@@ -46,6 +46,11 @@ module Api::V1
     # DELETE /movies/1
     def destroy
       @movie.destroy
+      if @movie.destroy
+        head :no_content, status: :ok
+      else
+        render json: @movie.errors, status: :unprocessable_entity
+      end
     end
 
     private
@@ -83,7 +88,6 @@ module Api::V1
         if params[:mine].present? &&
             params[:mine] == "true" &&
             current_user
-          
           @movies = current_user.movies
         else
           @movies = Movie
