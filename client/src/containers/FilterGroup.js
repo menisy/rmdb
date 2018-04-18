@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import Filter from './Filter'
-import Button from '../shared/Button'
+import Filter from '../components/Filter/Filter'
+import Button from '../components/shared/Button'
+
+import { connect } from 'react-redux'
+import moviesActions from '../actions/movies-actions'
 
 class FilterGroup extends Component {
   constructor(props) {
@@ -14,6 +17,11 @@ class FilterGroup extends Component {
       allMoviesActive: true,
       userMoviesActive: false
     }
+
+    this.handleCategoryClick = this.handleCategoryClick.bind(this)
+    this.handleRatingClick = this.handleRatingClick.bind(this)
+    this.handleRatingReset = this.handleRatingReset.bind(this)
+    this.handleCategoryReset = this.handleCategoryReset.bind(this)
   }
 
   handleInput = (e) => {
@@ -21,9 +29,14 @@ class FilterGroup extends Component {
     this.setState({[e.target.name]: e.target.value})
   }
 
-  componentDidMount() {
-    this.fetchCategories()
-    this.fetchRatings()
+  // componentDidMount() {
+  //   this.fetchCategories()
+  //   this.fetchRatings()
+  // }
+
+  componentWillMount(){
+    this.props.fetchCategories()
+    this.props.fetchRatings()
   }
 
   fetchCategories = () => {
@@ -53,23 +66,19 @@ class FilterGroup extends Component {
   }
 
   handleCategoryClick = (category) => {
-    this.setState({activeCategory: category})
-    this.props.setCategory(category)
+    this.props.filterByCategory(category)
   }
 
   handleRatingClick = (rating) => {
-    this.setState({activeRating: rating})
-    this.props.setRating(rating)
+    this.props.filterByRating(rating)
   }
 
   handleCategoryReset = () => {
-    this.setState({activeCategory: ''})
-    this.props.setCategory('')
+    this.props.filterByCategory('')
   }
 
   handleRatingReset = () => {
-    this.setState({activeRating: ''})
-    this.props.setRating('')
+    this.props.filterByRating('')
   }
 
   handleMoviesSelectClick = (option) => {
@@ -88,7 +97,7 @@ class FilterGroup extends Component {
                             isActive={this.state.userMoviesActive}
                             option={true}/>
     }
-    const {categories, ratings, activeCategory, activeRating} = this.state
+    const {categories, ratings, activeCategory, activeRating} = this.props
     return (
       <div className="filters">
         <nav className="nav nav-fill justify-content-center form-inline my-2">
@@ -114,4 +123,20 @@ class FilterGroup extends Component {
   }
 }
 
-export default FilterGroup
+const mapStateToProps = (state) => {
+  return {
+    activeCategory: state.movies.categoryFilter,
+    activeRating: state.movies.ratingFilter,
+    categories: state.movies.categories,
+    ratings: state.movies.ratings
+  }
+}
+
+const bindActionsToDispatch = ({
+      filterByCategory: moviesActions.filterByCategory,
+      filterByRating: moviesActions.filterByRating,
+      fetchCategories: moviesActions.fetchCategories,
+      fetchRatings: moviesActions.fetchRatings
+  })
+export default connect(mapStateToProps, bindActionsToDispatch)(FilterGroup)
+

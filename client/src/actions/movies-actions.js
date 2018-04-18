@@ -24,11 +24,39 @@ const moviesFetchSuccess = (movies) => {
   };
 }
 
+const categoriesFetchSuccess = (categories) => {
+  return {
+    type: TYPES.CATEGORIES_FETCH_SUCCESS,
+    payload: categories
+  };
+}
+
+const ratingsFetchSuccess = (ratings) => {
+  return {
+    type: TYPES.RATINGS_FETCH_SUCCESS,
+    payload: ratings
+  };
+}
+
 const setSearchText = (text) => {
   return {
     type: TYPES.SET_SEARCH_TEXT,
     payload: text
   };
+}
+
+const setCategoryFilter = (category_id) => {
+  return {
+    type: TYPES.SET_CATEGORY_FILTER,
+    payload: category_id
+  }
+}
+
+const setRatingFilter = (rating) => {
+  return {
+    type: TYPES.SET_RATING_FILTER,
+    payload: rating
+  }
 }
 
 const rateMovieSuccess = (ratingMovie) => {
@@ -46,14 +74,58 @@ const setLoading = (isLoading) => {
 }
 
 const fetchMovies = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const { searchQuery, categoryFilter, ratingFilter } = getState().movies
     dispatch(setLoading(true))
-    axios.get('/movies')
+    axios.get('/movies',{
+                  params: {
+                    text: searchQuery,
+                    rating: ratingFilter,
+                    category_id: categoryFilter,
+                    mine: false
+                  }
+                })
       .then(response => {
         dispatch(setLoading(false))
         dispatch(moviesFetchSuccess(response.data))
       })
       .catch(error => console.log(error))
+  }
+}
+
+const fetchCategories = () => {
+  return dispatch => {
+    axios.get('/categories')
+      .then(response => {
+        dispatch(categoriesFetchSuccess(response.data))
+      })
+      .catch(error => console.log(error))
+  }
+}
+
+const fetchRatings = () => {
+  return dispatch => {
+    axios.get('/ratings/movies_count')
+      .then(response => {
+        dispatch(ratingsFetchSuccess(response.data))
+      })
+      .catch(error => console.log(error))
+  }
+}
+
+
+
+const filterByCategory = (category_id) => {
+  return dispatch => {
+    dispatch(setCategoryFilter(category_id))
+    dispatch(fetchMovies())
+  }
+}
+
+const filterByRating = (rating) => {
+  return dispatch => {
+    dispatch(setRatingFilter(rating))
+    dispatch(fetchMovies())
   }
 }
 
@@ -81,7 +153,11 @@ const moviesActions = {
   setSearchText,
   setLoading,
   fetchMovies,
-  rateMovie
+  rateMovie,
+  filterByCategory,
+  filterByRating,
+  fetchCategories,
+  fetchRatings
 }
 
 export default moviesActions

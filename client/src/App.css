@@ -58,3 +58,6 @@ textarea {
 .msg.red{
   color: #C50000;
 }
+.ptr{
+  cursor: pointer;
+}
