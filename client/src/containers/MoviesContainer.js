@@ -75,7 +75,7 @@ class MoviesContainer extends Component {
   }
 
   handleSearch = (searchQuery) => {
-    this.setState({searchQuery: searchQuery}, () => this.setSearch(searchQuery))
+    this.props.searchMovies(searchQuery)
   }
 
   render() {
@@ -93,7 +93,9 @@ class MoviesContainer extends Component {
         <LoadingSpinner isLoading={this.props.isLoading}/>
         <MoviesList movies={this.props.movies.movies}
                     signedIn={this.props.signedIn}
-                    rateMovie={this.props.rateMovie}/>
+                    rateMovie={this.props.rateMovie}
+                    isLoading={this.props.isLoading}
+                    />
     </div>
     );
   }
@@ -109,7 +111,8 @@ const mapStateToProps = (state) => {
 
 const bindActionsToDispatch = ({
       fetchMovies: moviesActions.fetchMovies,
-      rateMovie: moviesActions.rateMovie
+      rateMovie: moviesActions.rateMovie,
+      searchMovies: moviesActions.searchMovies
   })
 
 export default connect(mapStateToProps, bindActionsToDispatch)(MoviesContainer)

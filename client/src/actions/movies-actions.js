@@ -38,10 +38,10 @@ const ratingsFetchSuccess = (ratings) => {
   };
 }
 
-const setSearchText = (text) => {
+const setSearchQuery = (query) => {
   return {
-    type: TYPES.SET_SEARCH_TEXT,
-    payload: text
+    type: TYPES.SET_SEARCH_QUERY,
+    payload: query
   };
 }
 
@@ -129,6 +129,13 @@ const filterByRating = (rating) => {
   }
 }
 
+const searchMovies = (query) => {
+  return dispatch => {
+    dispatch(setSearchQuery(query))
+    dispatch(fetchMovies())
+  }
+}
+
 const rateMovie = (id, rating) => {
   return dispatch => {
     headerDefaults.setHeader(axios)
@@ -150,14 +157,14 @@ const moviesActions = {
   moviesIsLoading,
   moviesErrored,
   moviesFetchSuccess,
-  setSearchText,
   setLoading,
   fetchMovies,
   rateMovie,
   filterByCategory,
   filterByRating,
   fetchCategories,
-  fetchRatings
+  fetchRatings,
+  searchMovies
 }
 
 export default moviesActions

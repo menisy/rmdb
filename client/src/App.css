@@ -58,6 +58,10 @@ textarea {
 .msg.red{
   color: #C50000;
 }
-.ptr{
+.cursor-ptr{
   cursor: pointer;
+}
+.frowny{
+  margin-right: 0.1rem;
+  margin-bottom: 0.1rem;
 }

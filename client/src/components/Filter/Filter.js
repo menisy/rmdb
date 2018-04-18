@@ -4,19 +4,9 @@ import FilterItem from './FilterItem'
 class Filter extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      title: '',
-      items: [],
-      activeItem: ''
-    }
-  }
 
-  componentDidMount = () => {
-    this.setState({
-      title: this.props.title,
-      items: this.props.items,
-      activeItem: this.props.activeItem
-    })
+    this.handleReset = this.handleReset.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleClick = (id) => {

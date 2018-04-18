@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import $ from 'jquery'
+
+let _search
 
 class SearchForm extends Component {
   constructor(props) {
     super(props)
-    const { movie } = this.props
 
-    this.state = {
-
-    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   handleSubmit = (e) => {
@@ -17,8 +16,7 @@ class SearchForm extends Component {
   }
 
   handleChange = () => {
-    const query = $('input#movies-search').val()
-    this.props.handleSearch(query)
+    this.props.handleSearch(_search.value)
   }
 
   render() {
@@ -26,7 +24,10 @@ class SearchForm extends Component {
       <div className="nav-item my-2">
         <form className="form-inline" onSubmit={this.handleSubmit}>
           <div className="input-group flex-sm-fill">
-            <input className="form-control col-12" type="search"
+            <input
+              ref={input => _search = input}
+              className="form-control col-12"
+              type="search"
               placeholder="Search" aria-label="Search"
               id="movies-search" onChange={this.handleChange}></input>
             <div className="input-group-append">

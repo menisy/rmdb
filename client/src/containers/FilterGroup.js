@@ -94,8 +94,8 @@ class FilterGroup extends Component {
     if(this.props.signedIn){
       userButton = <Button  title="Your Movies"
                             onClick={this.handleMoviesSelectClick}
-                            isActive={this.state.userMoviesActive}
-                            option={true}/>
+                            isActive={this.props.userMoviesActive}
+                            />
     }
     const {categories, ratings, activeCategory, activeRating} = this.props
     return (
@@ -103,8 +103,8 @@ class FilterGroup extends Component {
         <nav className="nav nav-fill justify-content-center form-inline my-2">
           <Button title="All Movies"
                   onClick={this.handleMoviesSelectClick}
-                  isActive={this.state.allMoviesActive}
-                  option={false}/>
+                  isActive={!this.props.userMoviesActive}
+                  />
           {userButton}
         </nav>
         <Filter title="Category"

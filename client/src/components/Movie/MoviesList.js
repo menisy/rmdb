@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import Movie from './Movie'
 import MovieForm from './MovieForm'
 import Notification from '../shared/Notification'
 import SearchForm from '../Search/SearchForm'
-import Sort from '../Sort'
-import headerDefaults from '../../headerDefaults'
 import Button from '../shared/Button'
 
 class MoviesList extends Component {
@@ -66,6 +63,12 @@ class MoviesList extends Component {
     const { editingMovieId } = this.state
     const movies = this.props.movies
 
+    let emptyMsg
+
+    if(movies.length === 0 && !this.props.isLoading){
+      emptyMsg = <h5><i className="far fa-frown frowny"/>ops! No movies here, try changing the search query or reset the filters.</h5>
+    }
+
     return (
       <div className="mt-xs-2 row">
         {movies.map(movie => {
@@ -83,6 +86,9 @@ class MoviesList extends Component {
                       />)
           }
         })}
+        <div className="empty-msg col-12 text-center">
+          {emptyMsg}
+        </div>
       </div>
     );
   }

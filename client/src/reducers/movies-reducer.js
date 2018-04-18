@@ -5,10 +5,10 @@ const initialState = {
   categories: [],
   ratings: [],
   alert: {},
-  searchQuery: '',
   isLoading: false,
   isError: false,
   ratingMovie: false,
+  searchQuery: '',
   categoryFilter: '',
   ratingFilter: ''
 }

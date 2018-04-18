@@ -18,7 +18,7 @@ const LoginForm = ({onLogin = f => f, onFocus = f => f}) => {
                     onChange={() => onFocus()}/>
             <input  ref={input => _password = input}
                     type="password"
-                    className="form-control mr-sm-2"
+                    className="form-control mr-sm-2 my-2"
                     aria-label="Password"
                     placeholder="Password" required
                     onFocus={() => onFocus()}
