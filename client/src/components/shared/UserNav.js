@@ -8,8 +8,8 @@ class UserNav extends Component {
   render() {
 
     return (
-      <div className="d-flex">
-        <h2>Welcome, {this.props.username}</h2>
+      <div className="d-flex navbar-dark">
+        <h3 className="text-light">Welcome, {this.props.username}</h3>
       </div>
     )
   }

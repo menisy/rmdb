@@ -4,6 +4,8 @@ import axios from 'axios'
 import AppHeader from './components/AppHeader'
 import MoviesContainer from './components/Movie/MoviesContainer'
 import FilterGroup from './components/Filter/FilterGroup'
+import { connect } from 'react-redux'
+import { setSearchText } from './actions/movies-actions'
 
 class App extends Component {
   constructor(props) {
@@ -21,9 +23,11 @@ class App extends Component {
       myMovies: false
     }
     this.setSignedIn = this.setSignedIn.bind(this)
-    this.fetchMovies = this.fetchMovies.bind(this)
     this.checkForToken = this.checkForToken.bind(this)
     this.setMyMovies = this.setMyMovies.bind(this)
+    this.setCategory = this.setCategory.bind(this)
+    this.setRating = this.setRating.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
     // Set axios defaults
     axios.defaults.baseURL = 'http://localhost:3001/api/v1'
     axios.defaults.headers.common['Authorization'] =
@@ -66,46 +70,47 @@ class App extends Component {
         })
   }
 
-  fetchMovies = () => {
-    const rating = this.state.activeRating
-    const category = this.state.activeCategory
-    const searchQuery = this.state.searchQuery
-    const myMovies = this.state.myMovies
-    axios.get(`/movies`,
-                {
-                  params: {
-                    sort_by: this.state.sortBy,
-                    text: searchQuery,
-                    rating: rating,
-                    category_id: category,
-                    mine: myMovies
-                  }
-                }
-              )
-    .then(response => {
-      this.setState({movies: response.data})
-    })
-    .catch(error => console.log(error))
-  }
+  // fetchMovies = () => {
+  //   const rating = this.state.activeRating
+  //   const category = this.state.activeCategory
+  //   const searchQuery = this.state.searchQuery
+  //   const myMovies = this.state.myMovies
+  //   axios.get('/movies',
+  //               {
+  //                 params: {
+  //                   sort_by: this.state.sortBy,
+  //                   text: searchQuery,
+  //                   rating: rating,
+  //                   category_id: category,
+  //                   mine: myMovies
+  //                 }
+  //               }
+  //             )
+  //   .then(response => {
+  //     this.setState({movies: response.data})
+  //   })
+  //   .catch(error => console.log(error))
+  // }
 
   setRating = (rating) => {
-    this.setState({activeRating: rating}, () => this.fetchMovies())
+    this.setState({activeRating: rating})
   }
 
   setCategory = (category) => {
-    this.setState({activeCategory: category}, () => this.fetchMovies())
-  }
-
-  setSearch = (searchQuery, myMovies = false) => {
-    this.setState({searchQuery}, () => this.fetchMovies())
+    this.setState({activeCategory: category})
   }
 
   setMyMovies = (myMovies = false) => {
-    this.setState({myMovies}, () => this.fetchMovies())
+    this.setState({myMovies})
   }
 
   setMovies = (movies) => {
     this.setState({movies: movies})
+  }
+
+  updateAlert = () => {
+    console.log(this.props)
+    this.props.onSetSearchText('hello')
   }
   render() {
     const {signedIn, username, email} = this.state
@@ -115,6 +120,8 @@ class App extends Component {
       <div>
         <div className="app">
           <div>
+            <div className="pt-5"onClick={this.updateAlert}>Click me</div>
+            <div>{this.props.movies.searchText}</div>
             <AppHeader userData={userData}
                        signedIn={this.state.signedIn}
                        onSignIn={this.setSignedIn}/>
@@ -122,17 +129,19 @@ class App extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-3 col-lg-2">
-                <FilterGroup moviesCount={this.state.movies.length}
-                             setCategory={this.setCategory}
+                <FilterGroup setCategory={this.setCategory}
                              setRating={this.setRating}
                              setMyMovies={this.setMyMovies}
                              signedIn={this.state.signedIn}
                   />
               </div>
               <div className="col-md-9 col-lg-10">
-                <MoviesContainer movies={this.state.movies}
-                                 setSearch={this.setSearch}
-                                 signedIn={this.state.signedIn} />
+                <MoviesContainer signedIn={this.state.signedIn}
+                                 userId={this.state.id}
+                                 rating={this.state.activeRating}
+                                 category={this.state.activeCategory}
+                                 myMovies={this.state.myMovies}
+                                  />
               </div>
             </div>
           </div>
@@ -142,4 +151,36 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = state => ({
+  movies: state.movies,
+  user: state.user
+})
+
+const bindActionsToDispatch = dispatch =>
+(
+  {
+    onSetSearchText: (text) => {dispatch(setSearchText(text))}
+  }
+);
+
+export default connect(mapStateToProps, bindActionsToDispatch)(App)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

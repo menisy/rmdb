@@ -57,7 +57,7 @@ class LoginContainer extends Component {
   render() {
 
     return (
-      <div className="d-flex">
+      <div className="d-flex navbar-dark">
         <Notification in={this.state.transitionIn}
                       notification={this.state.notification}
                       color={this.state.notifColor} />

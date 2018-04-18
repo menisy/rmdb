@@ -14,7 +14,22 @@ class MoviesList extends Component {
 
     this.state = {
       editingMovieId: null,
+      signedIn: this.props.signedIn,
+      movies: []
     }
+    this.newMovie = this.newMovie.bind(this)
+    this.updateMovie = this.updateMovie.bind(this)
+    this.deleteMovie = this.deleteMovie.bind(this)
+    this.rateMovie = this.rateMovie.bind(this)
+    this.resetNotification = this.resetNotification.bind(this)
+    this.enableEditing = this.enableEditing.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
+  }
+
+  componentDidMount = () => {
+    this.setState({
+      movies: this.props.movies
+    })
   }
 
 
@@ -28,6 +43,10 @@ class MoviesList extends Component {
 
   deleteMovie = (id) => {
     this.props.onDeleteMovie(id)
+  }
+
+  rateMovie = (id, rating) => {
+    this.props.onRatingMovie(id, rating)
   }
 
   resetNotification = () => {
@@ -45,10 +64,10 @@ class MoviesList extends Component {
 
   render() {
     const { editingMovieId } = this.state
-    const movies = this.props.movies
+    const movies = this.state.movies
 
     return (
-      <div className="mt-xs-2">
+      <div className="mt-xs-2 row">
         {movies.map(movie => {
           if(editingMovieId === movie.id) {
             return (<MovieForm key={movie.id} movie={movie}
@@ -58,7 +77,10 @@ class MoviesList extends Component {
           } else {
             return (<Movie key={movie.id} movie={movie}
                       onClick={this.enableEditing}
-                      onDelete={this.deleteMovie} />)
+                      onDelete={this.deleteMovie}
+                      onRating={this.rateMovie}
+                      signedIn={this.state.signedIn}
+                      />)
           }
         })}
       </div>
