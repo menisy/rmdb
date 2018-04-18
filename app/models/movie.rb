@@ -24,13 +24,13 @@ class Movie < ApplicationRecord
 
   # Scopes
   # Scope movies by rating
-  scope :by_rating, ->(rating) { 
+  scope :by_rating, ->(rating) {
     where( average_rating: ((rating.to_f)..((rating.to_f)+0.9))) }
 
   # scope movies by category
-  scope :by_category, ->(category_id) { 
+  scope :by_category, ->(category_id) {
     where(category_id: category_id) }
-  
+
   # Search and filters
   def self.search(text)
     results = order("created_at DESC")

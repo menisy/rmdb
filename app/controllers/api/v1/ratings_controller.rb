@@ -3,6 +3,7 @@ module Api::V1
     before_action :set_rating       , only: [:show, :update, :destroy]
     before_action :authenticate_user, only: [:create, :update, :destroy]
     before_action :ensure_ownership , only: [:update, :destroy]
+    before_action :check_for_rating , only: [:create]
 
     # GET /ratings
     def index
@@ -18,10 +19,10 @@ module Api::V1
 
     # POST /ratings
     def create
-      @rating = Rating.new(rating_params)
-
+      # rating already initialized in before action
       if @rating.save
-        render json: @rating, status: :created
+        @movie = @rating.movie
+        render json: @movie, status: :created
       else
         render json: @rating.errors, status: :unprocessable_entity
       end
@@ -57,6 +58,12 @@ module Api::V1
       # Use callbacks to share common setup or constraints between actions.
       def set_rating
         @rating = Rating.find(params[:id])
+      end
+
+      # Check if rating exists, if not create a new one
+      def check_for_rating
+        @rating = Rating.find_or_initialize_by(movie_id: rating_params[:movie_id],user_id: current_user.id)
+        @rating.rate = rating_params[:rate]
       end
 
       # Only allow a trusted parameter "white list" through.
