@@ -9,6 +9,7 @@ import MoviesList from '../components/Movie/MoviesList'
 
 import { connect } from 'react-redux'
 import moviesActions from '../actions/movies-actions'
+import LoadingSpinner from '../components/shared/LoadingSpinner'
 
 class MoviesContainer extends Component {
   constructor(props) {
@@ -89,7 +90,10 @@ class MoviesContainer extends Component {
         <nav className="nav nav-fill justify-content-end form-inline">
           <SearchForm handleSearch={this.handleSearch}/>
         </nav>
-        <MoviesList movies={this.props.movies.movies} signedIn={this.props.signedIn}/>
+        <LoadingSpinner isLoading={this.props.isLoading}/>
+        <MoviesList movies={this.props.movies.movies}
+                    signedIn={this.props.signedIn}
+                    rateMovie={this.props.rateMovie}/>
     </div>
     );
   }
@@ -98,12 +102,14 @@ class MoviesContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     movies: state.movies,
-    isSignedIn: true
+    isSignedIn: true,
+    isLoading: state.movies.isLoading
   }
 }
 
 const bindActionsToDispatch = ({
-      fetchMovies: moviesActions.fetchMovies
+      fetchMovies: moviesActions.fetchMovies,
+      rateMovie: moviesActions.rateMovie
   })
 
 export default connect(mapStateToProps, bindActionsToDispatch)(MoviesContainer)

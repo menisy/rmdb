@@ -78,7 +78,7 @@ class MoviesList extends Component {
             return (<Movie key={movie.id} movie={movie}
                       onClick={this.enableEditing}
                       onDelete={this.deleteMovie}
-                      onRating={this.rateMovie}
+                      rateMovie={this.props.rateMovie}
                       signedIn={this.props.signedIn}
                       />)
           }

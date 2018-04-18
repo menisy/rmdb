@@ -7,48 +7,31 @@ class Movie extends Component {
   constructor(props){
     super(props)
 
-    this.state = {
-      signedIn: this.props.signedIn,
-      movie: this.props.movie
-    }
-    this.handleEdit = this.handleEdit.bind(this)
-    this.handleDelete = this.handleEdit.bind(this)
     this.handleRating = this.handleRating.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
-  handleEdit = () => { this.props.onClick(this.state.movie.id) }
 
-  handleDelete = () => { this.props.onDelete(this.state.movie.id) }
+  handleEdit = () => { this.props.onClick(this.props.movie.id) }
+
+  handleDelete = () => { this.props.onDelete(this.props.movie.id) }
 
   handleRating = (rating) => {
-    headerDefaults.setHeader(axios)
-    const {movies} = this.state
-    const userId = this.props.userId
-    axios.post('/ratings/',
-                  {
-                    rating:{
-                      movie_id: this.state.movie.id,
-                      rate: rating,
-                      user_id: this.state.movie.user_id
-                    }
-                  }
-    )
-    .then(response => {
-      // replace movie in the movies array
-      const movie = response.data
-      this.setState({
-        movie: movie
-      })
-    }).catch((error, response) => console.log([error, response]))
+    this.props.rateMovie(this.props.movie.id, rating)
   }
 
   render() {
-    const { title, description, id, average_rating } = this.state.movie
+    const { title, description, id, average_rating } = this.props.movie
 
     let userRating
 
-    if(this.state.signedIn){
+    if(this.props.signedIn){
       userRating = <li className="list-group-item">Your rating
-                    <Rating key={id} id={id} rating={average_rating} onRating={this.handleRating} editable={true}/>
+                    <Rating key={id}
+                            id={id}
+                            rating={average_rating}
+                            onRating={this.handleRating}
+                            editable={true}/>
                    </li>
     }
 

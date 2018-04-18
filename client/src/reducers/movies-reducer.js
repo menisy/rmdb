@@ -5,7 +5,8 @@ const initialState = {
   alert: {},
   searchText: '',
   isLoading: false,
-  signedIn: true
+  isError: false,
+  ratingMovie: false
 }
 
 const moviesReducer = (state = initialState, { type, payload }) => {

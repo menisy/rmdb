@@ -2,14 +2,6 @@ import React, { Component } from 'react'
 import StarRatings from 'react-star-ratings'
 
 class Rating extends Component {
-    constructor(props){
-      super(props)
-      this.changeRating = this.changeRating.bind(this)
-    }
-
-    shouldComponentUpdate = () => {
-      return true
-    }
 
     changeRating = ( newRating ) => {
       this.props.onRating(newRating);
@@ -37,7 +29,7 @@ class Rating extends Component {
                       />
       }
       return (
-        <div className="rating d-inline">
+        <div className="rating">
           {starWidget}
         </div>
       );
