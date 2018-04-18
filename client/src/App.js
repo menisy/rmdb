@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import './App.css'
 import axios from 'axios'
 import AppHeader from './components/AppHeader'
-import MoviesContainer from './components/Movie/MoviesContainer'
+import MoviesContainer from './containers/MoviesContainer'
 import FilterGroup from './components/Filter/FilterGroup'
 import { connect } from 'react-redux'
-import { setSearchText } from './actions/movies-actions'
+import moviesActions from './actions/movies-actions'
 
 class App extends Component {
   constructor(props) {
@@ -27,7 +27,6 @@ class App extends Component {
     this.setMyMovies = this.setMyMovies.bind(this)
     this.setCategory = this.setCategory.bind(this)
     this.setRating = this.setRating.bind(this)
-    this.updateAlert = this.updateAlert.bind(this)
     // Set axios defaults
     axios.defaults.baseURL = 'http://localhost:3001/api/v1'
     axios.defaults.headers.common['Authorization'] =
@@ -35,20 +34,24 @@ class App extends Component {
   }
 
 
-  componentDidMount = () => {
-    if(this.checkForToken()){
-      const context = this
-      axios.get('/users/me')
-        .then(function (response) {
-          const {username, email, id} = response.data
-          const signedIn = true
-          context.setState({username, email, id, signedIn})
-        })
-        .catch(function (error) {
-          console.log(error)
-      });
-    }
-  }
+  // componentDidMount = () => {
+  //   if(this.checkForToken()){
+  //     const context = this
+  //     axios.get('/users/me')
+  //       .then(function (response) {
+  //         const {username, email, id} = response.data
+  //         const signedIn = true
+  //         context.setState({username, email, id, signedIn})
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error)
+  //     });
+  //   }
+  // }
+
+  // componentWillMount = () => {
+  //   this.props.fetchMovies()
+  // }
 
   checkForToken = () => {
     if(localStorage.getItem("jwtToken")){
@@ -108,20 +111,13 @@ class App extends Component {
     this.setState({movies: movies})
   }
 
-  updateAlert = () => {
-    console.log(this.props)
-    this.props.onSetSearchText('hello')
-  }
   render() {
     const {signedIn, username, email} = this.state
     const userData = {signedIn, username, email}
-    console.log(userData)
     return (
       <div>
         <div className="app">
           <div>
-            <div className="pt-5"onClick={this.updateAlert}>Click me</div>
-            <div>{this.props.movies.searchText}</div>
             <AppHeader userData={userData}
                        signedIn={this.state.signedIn}
                        onSignIn={this.setSignedIn}/>
@@ -151,17 +147,17 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  movies: state.movies,
-  user: state.user
-})
-
-const bindActionsToDispatch = dispatch =>
-(
-  {
-    onSetSearchText: (text) => {dispatch(setSearchText(text))}
+const mapStateToProps = (state) => {
+  return {
+    movies: state.movies,
+    user: state.user,
   }
-);
+}
+
+const bindActionsToDispatch = ({
+      onSetSearchText:  moviesActions.setSearchText,
+      fetchMovies: moviesActions.fetchMovies
+  })
 
 export default connect(mapStateToProps, bindActionsToDispatch)(App)
 

@@ -64,7 +64,7 @@ class MoviesList extends Component {
 
   render() {
     const { editingMovieId } = this.state
-    const movies = this.state.movies
+    const movies = this.props.movies
 
     return (
       <div className="mt-xs-2 row">
@@ -79,7 +79,7 @@ class MoviesList extends Component {
                       onClick={this.enableEditing}
                       onDelete={this.deleteMovie}
                       onRating={this.rateMovie}
-                      signedIn={this.state.signedIn}
+                      signedIn={this.props.signedIn}
                       />)
           }
         })}
