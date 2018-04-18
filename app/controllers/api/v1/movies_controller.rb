@@ -1,9 +1,9 @@
 module Api::V1
   class MoviesController < ApplicationController
-    before_action :set_movie        , only: [:show, :update, :destroy]
-    before_action :authenticate_user, only: [:create, :update, :destroy, :user_movies]
-    before_action :ensure_ownership , only: [:update, :destroy]
-    before_action :check_mine_param , only: [:index]
+    before_action :set_movie                , only: [:show, :update, :destroy]
+    before_action :authenticate_api_v1_user!, only: [:create, :update, :destroy, :user_movies]
+    before_action :ensure_ownership         , only: [:update, :destroy]
+    before_action :check_mine_param         , only: [:index]
 
     # GET /movies
     def index
@@ -13,7 +13,7 @@ module Api::V1
     end
 
     def user_movies
-      @user_movies = filter(current_user.movies)
+      @user_movies = filter(current_api_v1_user.movies)
       @user_movies = search(@user_movies)
       render json: @user_movies
     end
@@ -77,7 +77,7 @@ module Api::V1
 
       # Only movie owners can update/destroy the movies
       def ensure_ownership
-        if current_user != @movie.user
+        if current_api_v1_user != @movie.user
           render json: { error: "It's not your movie" }, status: :forbidden
           return
         end
@@ -87,8 +87,8 @@ module Api::V1
       def check_mine_param
         if params[:mine].present? &&
             params[:mine] == "true" &&
-            current_user
-          @movies = current_user.movies
+            current_api_v1_user
+          @movies = current_api_v1_user.movies
         else
           @movies = Movie
         end

@@ -1,6 +1,6 @@
 FactoryBot.define do
-  sequence :username do |n|
-    "username#{n}"
+  sequence :nickname do |n|
+    "nickname#{n}"
   end
 
   sequence :email do |n|
@@ -8,7 +8,7 @@ FactoryBot.define do
   end
   factory :user do
     email
-    username
+    nickname
     password "123456"
     password_confirmation "123456"
   end

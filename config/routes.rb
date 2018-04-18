@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  post 'user_token' => 'user_token#create'
   namespace :api do
     namespace :v1 do
+
       # Resources
       resources :ratings do
         collection do
@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       resources :categories
 
       # Authentication
-      post 'user_token' => 'user_token#create'
+      mount_devise_token_auth_for 'User', at: 'auth'
     end
   end
 end

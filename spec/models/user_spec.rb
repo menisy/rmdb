@@ -14,10 +14,10 @@ describe User, :type => :model do
       expect(user.errors[:email]).to include("Invalid Email Address")
     end
 
-    it "shouldn't create user with blank username" do
-      user = build(:user, username: '')
+    it "shouldn't create user with blank nickname" do
+      user = build(:user, nickname: '')
       user.valid?
-      expect(user.errors[:username]).to include("can't be blank")
+      expect(user.errors[:nickname]).to include("can't be blank")
     end
 
     it "shouldn't create user with blank password" do
@@ -52,18 +52,18 @@ describe User, :type => :model do
       expect(user2.errors[:email]).to include("has already been taken")
     end
 
-    it "shouldn't create user with same username (case sensetive)" do
-      user1 = create(:user, username: 'cool_username')
-      user2 = build(:user, username: 'cool_username')
+    it "shouldn't create user with same nickname (case sensetive)" do
+      user1 = create(:user, nickname: 'cool_nickname')
+      user2 = build(:user, nickname: 'cool_nickname')
       user2.valid?
-      expect(user2.errors[:username]).to include("has already been taken")
+      expect(user2.errors[:nickname]).to include("has already been taken")
     end
 
-    it "shouldn't create user with same username (not case sensetive)" do
-      user1 = create(:user, username: 'cool_username')
-      user2 = build(:user, username: 'cOol_userName')
+    it "shouldn't create user with same nickname (not case sensetive)" do
+      user1 = create(:user, nickname: 'cool_nickname')
+      user2 = build(:user, nickname: 'cOol_nickname')
       user2.valid?
-      expect(user2.errors[:username]).to include("has already been taken")
+      expect(user2.errors[:nickname]).to include("has already been taken")
     end
 
     it "should create user with no errors" do

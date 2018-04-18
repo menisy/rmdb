@@ -1,7 +1,7 @@
 module Api::V1
   class UsersController < ApplicationController
-    before_action :set_user, only: [:show, :update, :destroy]
-    before_action :authenticate_user, only: [:me]
+    before_action :set_user                 , only: [:show, :update, :destroy]
+    before_action :authenticate_api_v1_user!, only: [:me]
 
     # GET /users
     def index
@@ -17,7 +17,7 @@ module Api::V1
 
     # GET /users/me
     def me
-      render json: current_user.as_json(except: [:password_digest])
+      render json: current_api_v1_user.as_json(except: [:password_digest])
     end
 
     # POST /users

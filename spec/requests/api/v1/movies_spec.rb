@@ -83,8 +83,10 @@ describe "Movies API requests" do
       post api_v1_movies_path, params: params
 
       # test for the 401 status-code
+      resp = JSON.parse(response.body)
+
       expect(response).to be_unauthorized
-      expect(response.body).to be_blank
+      expect(resp["errors"][0]).to include('You need to sign in or sign up')
       # make sure no movies were created
       expect(Movie.count).to eq(0)
     end
@@ -95,8 +97,10 @@ describe "Movies API requests" do
       params = { movie: { description: 'such a cool movie' } }
       put "/api/v1/movies/#{movie.id}", params: params
       # test for the 401 status-code
+      resp = JSON.parse(response.body)
+
       expect(response).to be_unauthorized
-      expect(response.body).to be_blank
+      expect(resp["errors"][0]).to include('You need to sign in or sign up')
     end
 
     it 'should not be allowed to delete movie' do
@@ -105,8 +109,10 @@ describe "Movies API requests" do
       expect(Movie.count).to eq(1)
       delete api_v1_movie_path(movie)
       # test for the 401 status-code
+      resp = JSON.parse(response.body)
+
       expect(response).to be_unauthorized
-      expect(response.body).to be_blank
+      expect(resp["errors"][0]).to include('You need to sign in or sign up')
       # make sure movie still exists after request
       expect(Movie.count).to eq(1)
     end
@@ -114,8 +120,10 @@ describe "Movies API requests" do
     it 'should not respond with user movies list' do
       get user_movies_api_v1_movies_path
       # test for the 200 status-code
+      resp = JSON.parse(response.body)
+
       expect(response).to be_unauthorized
-      expect(response.body).to be_blank
+      expect(resp["errors"][0]).to include('You need to sign in or sign up')
     end
   end
 
@@ -127,7 +135,7 @@ describe "Movies API requests" do
       expect(Movie.count).to eq(0)
       # prepare request params
       params = { movie: JSON.parse(movie.to_json) }
-      post api_v1_movies_path, params: params, 
+      post api_v1_movies_path, params: params,
         headers: authenticated_header(user)
       # test for the 200 status-code
       expect(response).to be_success

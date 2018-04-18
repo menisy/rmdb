@@ -2,8 +2,7 @@ require "rails_helper"
 
 # Authentication helper method
 def authenticated_header(user)
-  token = Knock::AuthToken.new(payload: { sub: user.id }).token
-  { "Authorization": "Bearer #{token}" }
+  @auth_headers = user.create_new_auth_token
 end
 
 describe "Ratings API requests" do
@@ -16,7 +15,8 @@ describe "Ratings API requests" do
 
       # test for the 401 status-code
       expect(response).to be_unauthorized
-      expect(response.body).to be_blank
+      resp = JSON.parse(response.body)
+      expect(resp["errors"][0]).to include('You need to sign in or sign up')
       # make sure no movies were created
       expect(Rating.count).to eq(0)
     end
@@ -28,7 +28,8 @@ describe "Ratings API requests" do
       put api_v1_rating_path(rating), params: params
       # test for the 401 status-code
       expect(response).to be_unauthorized
-      expect(response.body).to be_blank
+      resp = JSON.parse(response.body)
+      expect(resp["errors"][0]).to include('You need to sign in or sign up')
     end
 
     it 'should not be allowed to delete rating' do
@@ -38,7 +39,8 @@ describe "Ratings API requests" do
       delete api_v1_rating_path(rating)
       # test for the 401 status-code
       expect(response).to be_unauthorized
-      expect(response.body).to be_blank
+      resp = JSON.parse(response.body)
+      expect(resp["errors"][0]).to include('You need to sign in or sign up')
       # make sure rating still exists after request
       expect(Rating.count).to eq(1)
     end

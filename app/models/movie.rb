@@ -53,7 +53,7 @@ class Movie < ApplicationRecord
     super((options || { }).merge({
       include: {
         category: { only: [ :title, :id ] },
-        user:     { only: :username }
+        user:     { only: :nickname }
       }
     }))
   end
