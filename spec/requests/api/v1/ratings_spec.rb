@@ -144,5 +144,24 @@ describe "Ratings API requests" do
       expect(resp[0]["movies_count"]).to eq(2)
       expect(resp[1]["movies_count"]).to eq(1)
     end
+
+    it "should return movie after rating creation" do
+      movie = create(:movie)
+      user = create(:user)
+      rating = build(:rating, user: user, movie: movie)
+      # prepare request params
+      params = { rating: JSON.parse(rating.to_json) }
+      post api_v1_ratings_path, params: params,
+        headers: authenticated_header(user)
+
+      resp = JSON.parse(response.body)
+      # test for the 200 status-code
+      expect(response).to be_success
+      # make sure movie is returned
+      expect(resp["id"]).to eq(movie.id)
+      # make sure it has the average rating
+      # equal to the sent rating
+      expect(resp["average_rating"].to_f).to eq(rating.rate.to_f)
+    end
   end
 end
