@@ -9,14 +9,14 @@ puts "Seeding DB with some test records"
 # Users
 user1 = User.new
 user1.email = 'userone@gmail.com'
-user1.username = 'User1'
+user1.nickname = 'User1'
 user1.password = 'rmdbisthebest'
 user1.password_confirmation = 'rmdbisthebest'
 user1.save!
 
 user2 = User.new
 user2.email = 'usertwo@gmail.com'
-user2.username = 'User2'
+user2.nickname = 'User2'
 user2.password = 'imsuchacooluser'
 user2.password_confirmation = 'imsuchacooluser'
 user2.save!
