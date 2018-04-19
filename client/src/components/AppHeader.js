@@ -1,30 +1,16 @@
 import React, { Component } from 'react';
-import LoginContainer from './Login/LoginContainer'
+import LoginContainer from '../containers/LoginContainer'
 import UserNav from './shared/UserNav'
 
 class AppHeader extends Component {
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      signedIn: this.props.userData.signedIn,
-      username: this.props.userData.username,
-      email: this.props.userData.email
-    }
-    this.handleSuccessSignIn = this.handleSuccessSignIn.bind(this)
-  }
-
-  handleSuccessSignIn(userData){
-    this.props.onSignIn(userData)
-  }
-
   render(){
     let userArea
-    if(!this.props.signedIn){
-      userArea = <LoginContainer onSignIn={this.handleSuccessSignIn} />
-    }else{
-      userArea = <UserNav username={this.props.userData.username} />
+    const { isSignedIn, isLoading, attributes } = this.props.currentUser
+    if(!isSignedIn && !isLoading){
+      userArea = <LoginContainer/>
+    }else if(isSignedIn){
+      userArea = <UserNav attributes={ attributes } />
     }
 
     return (

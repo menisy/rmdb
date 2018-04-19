@@ -1,21 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
 import registerServiceWorker from './registerServiceWorker';
-import { createStore, applyMiddleware, compose } from 'redux';
+
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import rootReducer from './reducers'
-import moviesActions from './actions/movies-actions'
 
-const storeEnhancers = compose(
-                          applyMiddleware(thunk),
-                          window.devToolsExtension && window.
-                              window.devToolsExtension()
-                          )
+import configureStore from './redux/configureStore'
 
-const store = createStore(rootReducer, storeEnhancers);
+import { verifyCredentials } from './redux-token-auth-config'
+
+
+const store = configureStore()
+// user auth
+verifyCredentials(store)
 
 ReactDOM.render(<Provider store={store}>
                   <App searchQuery={'helelllo'}/>

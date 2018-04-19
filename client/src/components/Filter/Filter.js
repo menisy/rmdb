@@ -20,6 +20,7 @@ class Filter extends Component {
     const title = this.props.title
     const items = this.props.items
     const activeItem = this.props.activeItem
+    console.log(items)
     return (
       <div className="nav flex-column mt-2">
         <div className="nav-item nav-fill nav">

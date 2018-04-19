@@ -12,8 +12,6 @@ class App extends Component {
     super(props)
     // Set axios defaults
     axios.defaults.baseURL = 'http://localhost:3001/api/v1'
-    axios.defaults.headers.common['Authorization'] =
-        'Bearer ' + localStorage.getItem('jwtToken')
   }
 
   render() {
@@ -22,8 +20,8 @@ class App extends Component {
         <div className="app">
           <div>
             <AppHeader userData={false}
-                       signedIn={false}
-                       onSignIn={this.setSignedIn}/>
+                       currentUser={this.props.auth.currentUser}
+                       />
           </div>
           <div className="container">
             <div className="row">
@@ -44,7 +42,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     movies: state.movies,
-    user: state.user,
+    auth: state.reduxTokenAuth
   }
 }
 
@@ -54,21 +52,3 @@ const bindActionsToDispatch = ({
   })
 
 export default connect(mapStateToProps, bindActionsToDispatch)(App)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

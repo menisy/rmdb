@@ -4,7 +4,6 @@ import Movie from '../components/Movie/Movie'
 import MovieForm from '../components/Movie/MovieForm'
 import Notification from '../components/shared/Notification'
 import SearchForm from '../components/Search/SearchForm'
-import headerDefaults from '../headerDefaults'
 import MoviesList from '../components/Movie/MoviesList'
 
 import { connect } from 'react-redux'
@@ -24,7 +23,7 @@ class MoviesContainer extends Component {
     this.handleSearch = this.handleSearch.bind(this)
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.fetchMovies()
   }
 
@@ -53,7 +52,6 @@ class MoviesContainer extends Component {
   }
 
   deleteMovie = (id) => {
-    headerDefaults.setHeader(axios)
     axios.delete(`/movies/${id}`)
     .then(response => {
       this.setState({
@@ -90,11 +88,11 @@ class MoviesContainer extends Component {
         <nav className="nav nav-fill justify-content-end form-inline">
           <SearchForm handleSearch={this.handleSearch}/>
         </nav>
-        <LoadingSpinner isLoading={this.props.isLoading}/>
+        <LoadingSpinner isLoading={this.props.movies.isLoading}/>
         <MoviesList movies={this.props.movies.movies}
-                    signedIn={this.props.signedIn}
+                    auth={this.props.auth}
                     rateMovie={this.props.rateMovie}
-                    isLoading={this.props.isLoading}
+                    isLoading={this.props.movies.isLoading}
                     />
     </div>
     );
@@ -104,8 +102,7 @@ class MoviesContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     movies: state.movies,
-    isSignedIn: true,
-    isLoading: state.movies.isLoading
+    auth: state.reduxTokenAuth
   }
 }
 

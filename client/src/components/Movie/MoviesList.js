@@ -82,7 +82,7 @@ class MoviesList extends Component {
                       onClick={this.enableEditing}
                       onDelete={this.deleteMovie}
                       rateMovie={this.props.rateMovie}
-                      signedIn={this.props.signedIn}
+                      auth={this.props.auth}
                       />)
           }
         })}

@@ -6,10 +6,10 @@ class UserNav extends Component {
   }
 
   render() {
-
+    const { username } = this.props.attributes
     return (
       <div className="d-flex navbar-dark">
-        <h3 className="text-light">Welcome, {this.props.username}</h3>
+        <h3 className="text-light">Welcome, {username}</h3>
       </div>
     )
   }

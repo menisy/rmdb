@@ -9,14 +9,6 @@ import moviesActions from '../actions/movies-actions'
 class FilterGroup extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      categories: [],
-      ratings: [],
-      activeCategory: '',
-      activeRating: '',
-      allMoviesActive: true,
-      userMoviesActive: false
-    }
 
     this.handleCategoryClick = this.handleCategoryClick.bind(this)
     this.handleRatingClick = this.handleRatingClick.bind(this)
@@ -34,7 +26,7 @@ class FilterGroup extends Component {
   //   this.fetchRatings()
   // }
 
-  componentWillMount(){
+  componentDidMount(){
     this.props.fetchCategories()
     this.props.fetchRatings()
   }

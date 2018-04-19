@@ -1,6 +1,4 @@
 import axios from 'axios'
-import headerDefaults from '../headerDefaults'
-
 import TYPES from '../shared/movie-action-types'
 
 const moviesIsLoading = (isLoading) => {
@@ -138,7 +136,6 @@ const searchMovies = (query) => {
 
 const rateMovie = (id, rating) => {
   return dispatch => {
-    headerDefaults.setHeader(axios)
     axios.post('/ratings/',
                   {
                     rating:{

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Rating from '../Rating/Rating'
 import axios from 'axios'
-import headerDefaults from '../../headerDefaults'
 
 class Movie extends Component {
   constructor(props){
@@ -22,16 +21,16 @@ class Movie extends Component {
 
   render() {
     const { title, description, id, average_rating } = this.props.movie
-
+    const signedIn = this.props.auth.currentUser.isSignedIn
     let userRating
 
-    if(this.props.signedIn){
+    if(signedIn){
       userRating = <li className="list-group-item">Your rating
                     <Rating key={id}
                             id={id}
                             rating={average_rating}
                             onRating={this.handleRating}
-                            editable={true}/>
+                            editable={signedIn}/>
                    </li>
     }
 
