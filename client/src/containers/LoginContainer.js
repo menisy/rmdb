@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Notification from '../components/shared/Notification'
 import LoginForm from '../components/Login/LoginForm'
 
 class LoginContainer extends Component {
@@ -26,9 +25,6 @@ class LoginContainer extends Component {
 
     return (
       <div className="d-flex navbar-dark">
-{/*        <Notification in={this.state.transitionIn}
-                      notification={this.state.notification}
-                      color={this.state.notifColor} />*/}
         <LoginForm onSignIn={this.handleSignIn}
                    onFocus={this.handleFocus}/>
       </div>

@@ -97,13 +97,13 @@ class FilterGroup extends Component {
                   />
           {userButton}
         </nav>
-        <Filter title="Category"
+        <Filter title="Categories"
                 items={categories}
                 activeItem={activeCategory}
                 handleClick={this.handleCategoryClick}
                 handleReset={this.handleCategoryReset}/>
         <div className="mt-4"></div>
-        <Filter title="Rating"
+        <Filter title="Ratings"
                 items={ratings}
                 activeItem={activeRating}
                 handleClick={this.handleRatingClick}
@@ -119,7 +119,8 @@ const mapStateToProps = (state) => {
     activeRating: state.movies.ratingFilter,
     categories: state.movies.categories,
     ratings: state.movies.ratings,
-    myMovies: state.movies.myMovies
+    myMovies: state.movies.myMovies,
+    currentUser: state.reduxTokenAuth.currentUser
   }
 }
 

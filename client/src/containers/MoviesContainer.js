@@ -102,7 +102,7 @@ class MoviesContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     movies: state.movies,
-    auth: state.reduxTokenAuth
+    auth: state.reduxTokenAuth,
   }
 }
 

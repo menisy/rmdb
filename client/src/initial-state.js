@@ -10,6 +10,7 @@ const initialState = {
     categoryFilter: '',
     ratingFilter: '',
     myMovies: false,
+
     reduxTokenAuth: {
       currentUser: {
         isLoading: false,
@@ -19,6 +20,12 @@ const initialState = {
         },
       },
     },
+
+    notification: {
+      messages: [],
+      color: '',
+      transition: false
+    }
   }
 
 export default initialState;

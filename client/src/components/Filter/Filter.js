@@ -20,14 +20,13 @@ class Filter extends Component {
     const title = this.props.title
     const items = this.props.items
     const activeItem = this.props.activeItem
-    console.log(items)
     return (
-      <div className="nav flex-column mt-2">
+      <div className="nav-bar flex-column mt-2">
         <div className="nav-item nav-fill nav">
-          <div className="nav-item font-weight-bold text-left pt-1">
+          <div className="nav-item font-weight-bold text-left ml-1 pt-1">
             {title}
           </div>
-          <div className="btn btn-outline-secondary nav-item btn-sm float-right"
+          <div className="btn btn-outline-secondary btn-sm w-20"
                onClick={this.handleReset}>
             Clear
           </div>

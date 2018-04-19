@@ -65,3 +65,9 @@ textarea {
   margin-right: 0.1rem;
   margin-bottom: 0.1rem;
 }
+.alert-wrapper{
+    z-index: 99999;
+    top: 1.5rem;
+    position: fixed;
+    margin-left: 17%;
+}

@@ -23,7 +23,7 @@ const Notification = ({ in: inProp, notification, color }) =>
         <span style={{
           ...defaultStyle,
           ...transitionStyles[transitionState]
-        }} className={'msg ' + color}>
+        }} className={`msg alert alert-${color}`}>
           {notification}
         </span>
       )

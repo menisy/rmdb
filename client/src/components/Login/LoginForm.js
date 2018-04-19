@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 const LoginForm = ({onSignIn = f => f, onFocus = f => f}) => {
     let _email, _password

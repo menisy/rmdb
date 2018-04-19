@@ -1,5 +1,6 @@
 import axios from 'axios'
 import TYPES from '../shared/movie-action-types'
+import notificationsActions from './notifications-actions'
 
 const authHeaders = {
   'access-token': localStorage.getItem('access-token'),
@@ -14,49 +15,49 @@ const moviesIsLoading = (isLoading) => {
   return {
     type: TYPES.SET_LOADING,
     payload: isLoading
-  };
+  }
 }
 
 const moviesErrored = (msg) => {
   return {
     type: TYPES.MOVIES_FETCH_ERROR,
     payload: {alert: { message: msg, color: 'danger' }}
-  };
+  }
 }
 
 const moviesFetchSuccess = (movies) => {
   return {
     type: TYPES.MOVIES_FETCH_SUCCESS,
     payload: movies
-  };
+  }
 }
 
 const categoriesFetchSuccess = (categories) => {
   return {
     type: TYPES.CATEGORIES_FETCH_SUCCESS,
     payload: categories
-  };
+  }
 }
 
 const ratingsFetchSuccess = (ratings) => {
   return {
     type: TYPES.RATINGS_FETCH_SUCCESS,
     payload: ratings
-  };
+  }
 }
 
 const setSearchQuery = (query) => {
   return {
     type: TYPES.SET_SEARCH_QUERY,
     payload: query
-  };
+  }
 }
 
 const setMyMovies = (myMoviesBool) => {
   return {
     type: TYPES.SET_MY_MOVIES,
     payload: myMoviesBool
-  };
+  }
 }
 
 const setCategoryFilter = (category_id) => {
@@ -77,14 +78,14 @@ const rateMovieSuccess = (ratingMovie) => {
   return {
     type: TYPES.RATE_MOVIE_SUCCESS,
     payload: ratingMovie
-  };
+  }
 }
 
 const setLoading = (isLoading) => {
   return {
     type: TYPES.SET_LOADING,
     payload: isLoading
-  };
+  }
 }
 
 export const fetchMovies = () => {
@@ -171,6 +172,7 @@ const rateMovie = (id, rating) => {
                   }
       )
       .then(response => {
+        dispatch(fetchRatings())
         dispatch(fetchMovies())
       }).catch((error, response) => console.log([error, response]))
   }
