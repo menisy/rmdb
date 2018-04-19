@@ -15,18 +15,19 @@ class App extends Component {
   }
 
   render() {
+    const { currentUser } = this.props.auth
     return (
       <div>
         <div className="app">
           <div>
             <AppHeader userData={false}
-                       currentUser={this.props.auth.currentUser}
+                       currentUser={currentUser}
                        />
           </div>
           <div className="container">
             <div className="row">
               <div className="col-md-3 col-lg-2">
-                <FilterGroup/>
+                <FilterGroup currentUser={currentUser}/>
               </div>
               <div className="col-md-9 col-lg-10">
                 <MoviesContainer/>

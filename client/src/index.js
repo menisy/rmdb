@@ -16,7 +16,7 @@ const store = configureStore()
 verifyCredentials(store)
 
 ReactDOM.render(<Provider store={store}>
-                  <App searchQuery={'helelllo'}/>
+                  <App/>
                 </Provider>
   , document.getElementById('root'));
 registerServiceWorker();

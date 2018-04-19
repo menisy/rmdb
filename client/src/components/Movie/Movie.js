@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Rating from '../Rating/Rating'
-import axios from 'axios'
 
 class Movie extends Component {
   constructor(props){

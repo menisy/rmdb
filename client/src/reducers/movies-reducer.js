@@ -1,5 +1,17 @@
 import TYPES from '../shared/movie-action-types'
-import initialState from '../initial-state'
+const initialState = {
+  movies: [],
+  categories: [],
+  ratings: [],
+  alert: {},
+  isLoading: false,
+  isError: false,
+  ratingMovie: false,
+  searchQuery: '',
+  categoryFilter: '',
+  ratingFilter: '',
+  myMovies: false,
+}
 
 const moviesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -9,6 +21,8 @@ const moviesReducer = (state = initialState, { type, payload }) => {
       return { ...state, alert: payload.alert };
     case TYPES.SET_SEARCH_QUERY:
       return { ...state, searchQuery: payload };
+    case TYPES.SET_MY_MOVIES:
+      return { ...state, myMovies: payload };
     case TYPES.SET_LOADING:
       return { ...state, isLoading: payload };
     case TYPES.SET_RATING_FILTER:

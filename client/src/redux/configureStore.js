@@ -5,7 +5,7 @@ import rootReducer from '../reducers'
 const storeEnhancers = compose(
                           applyMiddleware(thunk),
                           window.devToolsExtension && window.
-                              window.devToolsExtension()
+                          devToolsExtension() || compose
                           )
 
 export default function configureStore(preloadedState) {

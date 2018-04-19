@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-const LoginForm = ({onLogin = f => f, onFocus = f => f}) => {
+const LoginForm = ({onSignIn = f => f, onFocus = f => f}) => {
     let _email, _password
     const submit = e => {
         e.preventDefault()
-        onLogin(_email.value, _password.value)
+        onSignIn(_email.value, _password.value)
     }
 
     return (

@@ -73,20 +73,17 @@ class FilterGroup extends Component {
     this.props.filterByRating('')
   }
 
-  handleMoviesSelectClick = (option) => {
-    // Call setMyMovies prop with mine set to true
-    console.log(option)
-    this.setState({ userMoviesActive: option,
-                    allMoviesActive: !option},
-        () => this.props.setMyMovies(option))
+  handleMoviesSelectToggle = (option) => {
+    this.props.toggleMyMovies(option)
   }
 
   render() {
     var userButton = null
-    if(this.props.signedIn){
-      userButton = <Button  title="Your Movies"
-                            onClick={this.handleMoviesSelectClick}
-                            isActive={this.props.userMoviesActive}
+    if(this.props.currentUser.isSignedIn){
+      userButton = <Button  title="My Movies"
+                            onToggle={this.handleMoviesSelectToggle}
+                            isActive={this.props.myMovies}
+                            toggleBool={true}
                             />
     }
     const {categories, ratings, activeCategory, activeRating} = this.props
@@ -94,8 +91,9 @@ class FilterGroup extends Component {
       <div className="filters">
         <nav className="nav nav-fill justify-content-center form-inline my-2">
           <Button title="All Movies"
-                  onClick={this.handleMoviesSelectClick}
-                  isActive={!this.props.userMoviesActive}
+                  onToggle={this.handleMoviesSelectToggle}
+                  isActive={!this.props.myMovies}
+                  toggleBool={false}
                   />
           {userButton}
         </nav>
@@ -120,7 +118,8 @@ const mapStateToProps = (state) => {
     activeCategory: state.movies.categoryFilter,
     activeRating: state.movies.ratingFilter,
     categories: state.movies.categories,
-    ratings: state.movies.ratings
+    ratings: state.movies.ratings,
+    myMovies: state.movies.myMovies
   }
 }
 
@@ -128,7 +127,8 @@ const bindActionsToDispatch = ({
       filterByCategory: moviesActions.filterByCategory,
       filterByRating: moviesActions.filterByRating,
       fetchCategories: moviesActions.fetchCategories,
-      fetchRatings: moviesActions.fetchRatings
+      fetchRatings: moviesActions.fetchRatings,
+      toggleMyMovies: moviesActions.toggleMyMovies
   })
 export default connect(mapStateToProps, bindActionsToDispatch)(FilterGroup)
 

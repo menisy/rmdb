@@ -1,6 +1,15 @@
 import axios from 'axios'
 import TYPES from '../shared/movie-action-types'
 
+const authHeaders = {
+  'access-token': localStorage.getItem('access-token'),
+  'client': localStorage.getItem('client'),
+  'uid': localStorage.getItem('uid')
+}
+
+axios.defaults.headers.common = authHeaders
+axios.defaults.headers.post = authHeaders
+
 const moviesIsLoading = (isLoading) => {
   return {
     type: TYPES.SET_LOADING,
@@ -43,6 +52,13 @@ const setSearchQuery = (query) => {
   };
 }
 
+const setMyMovies = (myMoviesBool) => {
+  return {
+    type: TYPES.SET_MY_MOVIES,
+    payload: myMoviesBool
+  };
+}
+
 const setCategoryFilter = (category_id) => {
   return {
     type: TYPES.SET_CATEGORY_FILTER,
@@ -71,23 +87,26 @@ const setLoading = (isLoading) => {
   };
 }
 
-const fetchMovies = () => {
+export const fetchMovies = () => {
   return (dispatch, getState) => {
-    const { searchQuery, categoryFilter, ratingFilter } = getState().movies
+    const { searchQuery, categoryFilter, ratingFilter, myMovies } = getState().movies
     dispatch(setLoading(true))
     axios.get('/movies',{
                   params: {
                     text: searchQuery,
                     rating: ratingFilter,
                     category_id: categoryFilter,
-                    mine: false
-                  }
+                    mine: myMovies,
+                  },
                 })
       .then(response => {
         dispatch(setLoading(false))
         dispatch(moviesFetchSuccess(response.data))
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        dispatch(setLoading(false))
+        console.log(error)
+      })
   }
 }
 
@@ -134,6 +153,13 @@ const searchMovies = (query) => {
   }
 }
 
+const toggleMyMovies = (myMovies) => {
+  return dispatch => {
+    dispatch(setMyMovies(myMovies))
+    dispatch(fetchMovies())
+  }
+}
+
 const rateMovie = (id, rating) => {
   return dispatch => {
     axios.post('/ratings/',
@@ -161,7 +187,8 @@ const moviesActions = {
   filterByRating,
   fetchCategories,
   fetchRatings,
-  searchMovies
+  searchMovies,
+  toggleMyMovies,
 }
 
 export default moviesActions
