@@ -10,8 +10,7 @@
   "dependencies": {
     "array-to-sentence": "^2.0.0",
     "axios": "^0.18.0",
-    "boostrap": "^2.0.0",
-    "bootstrap": "next",
+    "bootstrap": "4.1.0",
     "jquery": "1.9.1",
     "popper.js": "^1.14.3",
     "react": "^16.3.1",
