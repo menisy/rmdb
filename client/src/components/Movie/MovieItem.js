@@ -61,9 +61,10 @@ class MovieItem extends Component {
           <div className="card-footer">
             {editMenu}
             <p className="card-text">
-              <small className="text-muted">
+              <small className="text-muted mx-2">
                 By <strong>{userName}</strong>
-                <br/>
+              </small>
+              <small>
                 <Timeago date={movie.created_at} />
               </small>
             </p>
