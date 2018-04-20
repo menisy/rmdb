@@ -14,7 +14,7 @@ class UserNav extends Component {
   render() {
     const { username } = this.props.attributes
     return (
-      <div className="d-flex">
+      <div className="d-flex justify-content-end">
         <h5 className="text-light my-2 mx-3">
           <i className="fa fa-user mx-2"/>
           Hello, {username}
