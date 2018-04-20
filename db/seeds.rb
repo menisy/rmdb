@@ -37,7 +37,7 @@ movies = []
 for i in 1..40
   movie = Movie.new
   movie.title = LiterateRandomizer.sentence(words: 3, punctuation: '')
-  movie.description = LiterateRandomizer.paragraph(sentences: 3)
+  movie.description = LiterateRandomizer.paragraph(sentences: 5)
   movie.user = users.sample
   movie.category = categories.sample
   movie.save
