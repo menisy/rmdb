@@ -58,9 +58,16 @@ body{
   color: #ddd !important;
 }
 .spinner-wrapper{
-  height: 0px;
+  position: fixed;
+  z-index: 99999;
+  left: 0;
+  top: 20px;
+  width: 100%;
 }
 .spinner-wrapper > div{
-  position: relative;
-  top: 15px;
+  width: 70%;
+  margin-left: 15%;
+}
+.spinner-wrapper > div > div{
+  background-color: #61DAFB!important;
 }

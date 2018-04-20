@@ -22,6 +22,7 @@ const TYPES = createConstantObject(
   'SET_PAGE',
   'SET_PAGES',
   'SET_ALL_COUNT',
+  'SET_SUBMITTING',
 );
 
 export default TYPES

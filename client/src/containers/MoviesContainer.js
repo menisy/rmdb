@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import MoviesList from '../components/Movie/MoviesList'
 import MovieForm from '../components/Movie/MovieForm'
 import SearchForm from '../components/Search/SearchForm'
-import LoadingSpinner from '../components/shared/LoadingSpinner'
 import moviesActions from '../actions/movies-actions'
 import Button from '../components/shared/Button'
 import $ from 'jquery'
@@ -90,7 +89,6 @@ class MoviesContainer extends Component {
           {newMovieButton}
           <SearchForm handleSearch={this.handleSearch}/>
         </nav>
-        <LoadingSpinner isLoading={isLoading}/>
         <MovieForm  onSubmit={this.submitMovie}
                     onDismiss={this.dismissModal}/>
         <Pagination movies={this.props.movies}

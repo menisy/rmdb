@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SyncLoader } from 'react-spinners';
+import { connect } from 'react-redux'
 
 class LoadingSpinner extends Component {
   render() {
@@ -11,4 +12,10 @@ class LoadingSpinner extends Component {
   }
 }
 
-export default LoadingSpinner
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.movies.isLoading
+  }
+}
+
+export default connect(mapStateToProps, {})(LoadingSpinner)

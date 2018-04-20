@@ -34,6 +34,13 @@ const setMyMovies = (myMoviesBool) => {
   }
 }
 
+const setSubmitting = (submitting) => {
+  return {
+    type: TYPES.SET_SUBMITTING,
+    payload: submitting
+  }
+}
+
 const setCategoryFilter = (category_id) => {
   return {
     type: TYPES.SET_CATEGORY_FILTER,
@@ -141,12 +148,16 @@ const newMovie = () => {
 
 const submitMovie = () => {
   return (dispatch, getState) => {
-    console.log(axios.defaults.headers.common)
-    const { editingMovie } = getState().movies
-    if(editingMovie.id){
-      dispatch(updateMovie(editingMovie))
-    }else{
-      dispatch(createMovie(editingMovie))
+    dispatch(setLoading(true))
+    // handle multi submit
+    if(!getState().movies.submittingMovie){
+      dispatch(setSubmitting(true))
+      const { editingMovie } = getState().movies
+      if(editingMovie.id){
+        dispatch(updateMovie(editingMovie))
+      }else{
+        dispatch(createMovie(editingMovie))
+      }
     }
   }
 }
@@ -169,6 +180,8 @@ const createMovie = (movie) => {
                 })
       .then(response => {
         dispatch(setEditingMovie(emptyMovie))
+        dispatch(setSubmitting(false))
+        dispatch(setLoading(false))
         dispatch(setShowModal(false))
         dispatch(fetchMovies())
         dispatch(fetchCategories())
@@ -177,6 +190,8 @@ const createMovie = (movie) => {
                             'success'))
       })
       .catch((error) => {
+        dispatch(setSubmitting(false))
+        dispatch(setLoading(false))
         dispatch(
           showNotification(error.response.data,
                             'danger'))
@@ -197,6 +212,8 @@ const updateMovie = (movie) => {
                 {headers: { ...headers}})
       .then(response => {
         dispatch(setEditingMovie(emptyMovie))
+        dispatch(setSubmitting(false))
+        dispatch(setLoading(false))
         dispatch(setShowModal(false))
         dispatch(fetchMovies())
         dispatch(fetchCategories())
@@ -205,6 +222,8 @@ const updateMovie = (movie) => {
                             'success'))
       })
       .catch((error) => {
+        dispatch(setSubmitting(false))
+        dispatch(setLoading(false))
         dispatch(
           showNotification(error.response.data,
                             'danger'))

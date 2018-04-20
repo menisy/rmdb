@@ -10,6 +10,7 @@ const initialState = {
     categoryFilter: '',
     ratingFilter: '',
     myMovies: false,
+    submittingMovie: false,
     editingMovie: {
       title: '',
       description: '',

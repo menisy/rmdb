@@ -15,6 +15,7 @@ const initialState = {
   page: 1,
   per: 12,
   pages: 0,
+  submittingMovie: false,
   editingMovie: {
     title: '',
     description: '',
@@ -53,6 +54,8 @@ const moviesReducer = (state = initialState, { type, payload }) => {
       return { ...state, pages: payload };
     case TYPES.SET_ALL_COUNT:
       return { ...state, all_count: payload };
+    case TYPES.SET_SUBMITTING:
+      return {...state, submittingMovie: payload};
     case TYPES.SET_MOVIE_SUBMITTED:
       return { ...state, editingMovie: payload };
     case TYPES.SET_SHOW_MODAL:

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LoginContainer from '../containers/LoginContainer'
 import UserNav from '../components/shared/UserNav'
 import Notification from '../components/shared/Notification'
+import LoadingSpinner from '../components/shared/LoadingSpinner'
 import { connect } from 'react-redux'
 import { signInUser, signOutUser } from '../redux-token-auth-config'
 import { fetchMovies } from '../actions/movies-actions'
@@ -62,6 +63,7 @@ class AppHeader extends Component {
 
     return (
       <div>
+        <LoadingSpinner/>
         <div className="alert-wrapper my-2 mw-100">
           <Notification in={transition}
                         onHide={this.handleHideNotification}
@@ -88,7 +90,8 @@ class AppHeader extends Component {
 
             <div className="collapse navbar-dark navbar-collapse"
                  id="topNavBar">
-              <div className="navbar-nav mr-auto mt-2 mt-lg-0"></div>
+              <div className="navbar-nav mr-auto mt-2 mt-lg-0">
+              </div>
               {userArea}
             </div>
           </div>
