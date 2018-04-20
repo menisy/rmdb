@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import Filter from '../components/Filter/Filter'
 import Button from '../components/shared/Button'
 
@@ -21,40 +20,9 @@ class FilterGroup extends Component {
     this.setState({[e.target.name]: e.target.value})
   }
 
-  // componentDidMount() {
-  //   this.fetchCategories()
-  //   this.fetchRatings()
-  // }
-
   componentDidMount(){
     this.props.fetchCategories()
     this.props.fetchRatings()
-  }
-
-  fetchCategories = () => {
-    axios.get('/categories', {
-      params: {
-        sort_by: this.state.sortBy
-      }
-    })
-    .then(response => {
-      console.log(response.data)
-      this.setState({categories: response.data})
-    })
-    .catch(error => console.log(error))
-  }
-
-  fetchRatings = () => {
-    axios.get('/ratings/movies_count', {
-      params: {
-        sort_by: this.state.sortBy
-      }
-    })
-    .then(response => {
-      console.log(response.data)
-      this.setState({ratings: response.data})
-    })
-    .catch(error => console.log(error))
   }
 
   handleCategoryClick = (category) => {
@@ -129,8 +97,8 @@ const mapStateToProps = (state) => {
 const bindActionsToDispatch = ({
       filterByCategory: moviesActions.filterByCategory,
       filterByRating: moviesActions.filterByRating,
-      fetchCategories: moviesActions.fetchCategories,
-      fetchRatings: moviesActions.fetchRatings,
+      fetchCategories: moviesActions.fetchCategoriesStart,
+      fetchRatings: moviesActions.fetchRatingsStart,
       toggleMyMovies: moviesActions.toggleMyMovies
   })
 export default connect(mapStateToProps, bindActionsToDispatch)(FilterGroup)

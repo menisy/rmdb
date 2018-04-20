@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import LoginContainer from '../containers/LoginContainer'
+import LoginContainer from '../components/Login/LoginContainer'
 import UserNav from '../components/shared/UserNav'
 import Notification from '../components/shared/Notification'
 import LoadingSpinner from '../components/shared/LoadingSpinner'
 import { connect } from 'react-redux'
 import { signInUser, signOutUser } from '../redux-token-auth-config'
-import { fetchMovies } from '../actions/movies-actions'
+import { fetchMoviesStart } from '../actions/movies-actions'
 import notificationsActions from '../actions/notifications-actions'
 import logo from '../logo.svg'
 
@@ -74,7 +74,7 @@ class AppHeader extends Component {
                         fixed-top navbar-dark
                         bg-dark justify-content-between">
           <div className="container">
-            <a className="" href="#">
+            <a className="" href="#home">
               <img src={logo} className="app-logo d-inline-block mb-2" alt="logo"/>
             </a>
             <h3 className="text-white">ReactMovieDB</h3>
@@ -113,7 +113,7 @@ const bindActionsToDispatch = ({
       signOutUser: signOutUser,
       showNotification: notificationsActions.showNotification,
       hideNotification: notificationsActions.hideNotification,
-      fetchMovies: fetchMovies
+      fetchMovies: fetchMoviesStart
   })
 
 export default connect(

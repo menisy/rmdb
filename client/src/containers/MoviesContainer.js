@@ -113,13 +113,13 @@ const mapStateToProps = (state) => {
 }
 
 const bindActionsToDispatch = ({
-      fetchMovies: moviesActions.fetchMovies,
-      rateMovie: moviesActions.rateMovie,
+      fetchMovies: moviesActions.fetchMoviesStart,
+      rateMovie: moviesActions.rateMovieStart,
       searchMovies: moviesActions.searchMovies,
       editMovie: moviesActions.editMovie,
       newMovie: moviesActions.newMovie,
-      deleteMovie: moviesActions.deleteMovie,
-      submitMovie: moviesActions.submitMovie,
+      deleteMovie: moviesActions.deleteMovieStart,
+      submitMovie: moviesActions.submitMovieStart,
       setEditingMovie: moviesActions.setEditingMovie,
       changePage: moviesActions.changePage,
       dismissModal: moviesActions.dismissModal,

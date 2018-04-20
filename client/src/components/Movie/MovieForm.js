@@ -27,6 +27,7 @@ let MovieForm = props => {
                   <Field name="title"
                           component="input"
                           type="text"
+                          autoFocus={true}
                           className="form-control col-12"/>
                 </div>
                 <div className="form-group">

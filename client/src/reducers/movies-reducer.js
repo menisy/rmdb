@@ -55,7 +55,7 @@ const moviesReducer = (state = initialState, { type, payload }) => {
     case TYPES.SET_ALL_COUNT:
       return { ...state, all_count: payload };
     case TYPES.SET_SUBMITTING:
-      return {...state, submittingMovie: payload};
+      return { ...state, submittingMovie: payload};
     case TYPES.SET_MOVIE_SUBMITTED:
       return { ...state, editingMovie: payload };
     case TYPES.SET_SHOW_MODAL:

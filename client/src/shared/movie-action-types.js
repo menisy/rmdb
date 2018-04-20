@@ -23,6 +23,7 @@ const TYPES = createConstantObject(
   'SET_PAGES',
   'SET_ALL_COUNT',
   'SET_SUBMITTING',
+  'FETCHING_MOVIES',
 );
 
 export default TYPES

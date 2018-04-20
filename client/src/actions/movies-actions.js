@@ -1,25 +1,9 @@
-import axios from 'axios'
 import TYPES from '../shared/movie-action-types'
 import { showNotification } from './notifications-actions'
 import emptyMovie from '../components/Movie/emptyMovie'
+import moviesServices from '../services/movies-services'
 
-
-// Set axios base url endpoint according to env
-axios.defaults.baseURL = process.env.REACT_APP_API_PATH
-
-const updateAuthHeaders = () => {
-  axios.defaults.headers.common = {
-    'access-token': localStorage.getItem('access-token'),
-    'client': localStorage.getItem('client'),
-    'uid': localStorage.getItem('uid')
-  }
-  axios.defaults.headers.post = {
-    'access-token': localStorage.getItem('access-token'),
-    'client': localStorage.getItem('client'),
-    'uid': localStorage.getItem('uid')
-  }
-}
-
+// Plain actions
 const setSearchQuery = (query) => {
   return {
     type: TYPES.SET_SEARCH_QUERY,
@@ -55,31 +39,17 @@ const setRatingFilter = (rating) => {
   }
 }
 
-const setLoading = (isLoading) => {
+export const setLoading = (isLoading) => {
   return {
     type: TYPES.SET_LOADING,
     payload: isLoading
   }
 }
 
-const setShowModal = (bool) => {
+export const setShowModal = (bool) => {
   return {
     type: TYPES.SET_SHOW_MODAL,
     payload: bool
-  }
-}
-
-const moviesIsLoading = (isLoading) => {
-  return {
-    type: TYPES.SET_LOADING,
-    payload: isLoading
-  }
-}
-
-const moviesErrored = (msg) => {
-  return {
-    type: TYPES.MOVIES_FETCH_ERROR,
-    payload: {alert: { message: msg, color: 'danger' }}
   }
 }
 
@@ -90,21 +60,21 @@ const moviesFetchSuccess = (movies) => {
   }
 }
 
-const categoriesFetchSuccess = (categories) => {
+export const categoriesFetchSuccess = (categories) => {
   return {
     type: TYPES.CATEGORIES_FETCH_SUCCESS,
     payload: categories
   }
 }
 
-const ratingsFetchSuccess = (ratings) => {
+export const ratingsFetchSuccess = (ratings) => {
   return {
     type: TYPES.RATINGS_FETCH_SUCCESS,
     payload: ratings
   }
 }
 
-const setEditingMovie = (movie) => {
+export const setEditingMovie = (movie) => {
   return {
     type: TYPES.SET_EDITING_MOVIE,
     payload: movie
@@ -118,19 +88,28 @@ const setPage = (page) => {
   }
 }
 
-const setAllCount = (allCount) => {
+export const setAllCount = (allCount) => {
   return {
     type: TYPES.SET_ALL_COUNT,
     payload: allCount
   }
 }
 
-const setPages = (pages) => {
+export const setPages = (pages) => {
   return {
     type: TYPES.SET_PAGES,
     payload: pages
   }
 }
+
+const setFetshingMovies = (bool) => {
+  return {
+    type: TYPES.FETCHING_MOVIES,
+    payload: bool
+  }
+}
+
+// Dispatchers
 
 const editMovie = (movie) => {
   return dispatch => {
@@ -146,19 +125,26 @@ const newMovie = () => {
   }
 }
 
-const submitMovie = () => {
-  return (dispatch, getState) => {
-    dispatch(setLoading(true))
-    // handle multi submit
-    if(!getState().movies.submittingMovie){
-      dispatch(setSubmitting(true))
-      const { editingMovie } = getState().movies
-      if(editingMovie.id){
-        dispatch(updateMovie(editingMovie))
-      }else{
-        dispatch(createMovie(editingMovie))
-      }
-    }
+const resetToDefaults = (alertText, alertColor='success') => {
+  return dispatch => {
+    dispatch(setEditingMovie(emptyMovie))
+    dispatch(setSubmitting(false))
+    dispatch(setLoading(false))
+    dispatch(setShowModal(false))
+    dispatch(fetchMoviesStart())
+    dispatch(fetchCategoriesStart())
+    dispatch(
+      showNotification(alertText, alertColor))
+  }
+}
+
+const showError = (errors) => {
+  return dispatch => {
+    dispatch(setSubmitting(false))
+    dispatch(setLoading(false))
+    dispatch(
+      showNotification(errors.response.data,
+                        'danger'))
   }
 }
 
@@ -168,226 +154,168 @@ const dismissModal = () => {
   }
 }
 
-const createMovie = (movie) => {
-  return (dispatch, getState) => {
-    updateAuthHeaders()
-    // Remove id from movie since it's rejected by
-    // backend's permit param
-    let {id, ...safeMovie} = movie
-    axios.post('/movies',
-                {
-                    movie: safeMovie
-                })
-      .then(response => {
-        dispatch(setEditingMovie(emptyMovie))
-        dispatch(setSubmitting(false))
-        dispatch(setLoading(false))
-        dispatch(setShowModal(false))
-        dispatch(fetchMovies())
-        dispatch(fetchCategories())
-        dispatch(
-          showNotification('Movie created successfully',
-                            'success'))
-      })
-      .catch((error) => {
-        dispatch(setSubmitting(false))
-        dispatch(setLoading(false))
-        dispatch(
-          showNotification(error.response.data,
-                            'danger'))
-      })
-  }
-}
-
-const updateMovie = (movie) => {
-  return (dispatch, getState) => {
-    const headers = updateAuthHeaders.authHeaders
-    // Remove id from movie since it's rejected by
-    // backend's permit param
-    let {id, ...safeMovie} = movie
-    axios.put(`/movies/${movie.id}`,
-                {
-                    movie: safeMovie
-                },
-                {headers: { ...headers}})
-      .then(response => {
-        dispatch(setEditingMovie(emptyMovie))
-        dispatch(setSubmitting(false))
-        dispatch(setLoading(false))
-        dispatch(setShowModal(false))
-        dispatch(fetchMovies())
-        dispatch(fetchCategories())
-        dispatch(
-          showNotification('Movie updated successfully',
-                            'success'))
-      })
-      .catch((error) => {
-        dispatch(setSubmitting(false))
-        dispatch(setLoading(false))
-        dispatch(
-          showNotification(error.response.data,
-                            'danger'))
-      })
-  }
-}
-
-const deleteMovie = (movieId) => {
-  return dispatch => {
-    updateAuthHeaders()
-    // Remove id from movie since it's rejected by
-    // backend's permit param
-    axios.delete(`/movies/${movieId}`)
-      .then(response => {
-        dispatch(fetchMovies())
-        dispatch(
-          showNotification('Movie deleted successfully',
-                            'success'))
-          dispatch(fetchCategories())
-          dispatch(fetchRatings())
-      })
-      .catch((error) => {
-        dispatch(
-          showNotification(error.response.data,
-                            'danger'))
-      })
-  }
-}
-
-
-export const fetchMovies = () => {
-  return (dispatch, getState) => {
-    const { searchQuery, categoryFilter,
-             ratingFilter, myMovies, page, per } = getState().movies
-    dispatch(setLoading(true))
-    updateAuthHeaders()
-    axios.get('/movies',{
-                  params: {
-                    text: searchQuery,
-                    rating: ratingFilter,
-                    category_id: categoryFilter,
-                    mine: myMovies,
-                    page: page,
-                    per: per,
-                  }
-                })
-      .then(response => {
-        dispatch(setLoading(false))
-        dispatch(setPages(response.data.pagination.pages))
-        dispatch(setAllCount(response.data.pagination.all_count))
-        dispatch(moviesFetchSuccess(response.data.movies))
-      })
-      .catch((error) => {
-        dispatch(setLoading(false))
-        dispatch(
-          showNotification(error.response.data,
-                            'danger'))
-      })
-  }
-}
-
-const fetchCategories = () => {
-  return dispatch => {
-    axios.get('/categories')
-      .then(response => {
-        dispatch(categoriesFetchSuccess(response.data))
-      })
-      .catch((error) => {
-        dispatch(
-          showNotification(error.response.data,
-                            'danger'))
-      })
-  }
-}
-
-const fetchRatings = () => {
-  return dispatch => {
-    axios.get('/ratings/movies_count')
-      .then(response => {
-        dispatch(ratingsFetchSuccess(response.data))
-      })
-      .catch((error) => {
-        dispatch(
-          showNotification(error.response.data,
-                            'danger'))
-      })
-  }
-}
-
-
 
 const filterByCategory = (category_id) => {
   return dispatch => {
+    dispatch(setPage(1))
     dispatch(setCategoryFilter(category_id))
-    dispatch(fetchMovies())
+    dispatch(fetchMoviesStart())
   }
 }
 
 const filterByRating = (rating) => {
   return dispatch => {
+    dispatch(setPage(1))
     dispatch(setRatingFilter(rating))
-    dispatch(fetchMovies())
+    dispatch(fetchMoviesStart())
   }
 }
 
 const searchMovies = (query) => {
-  return dispatch => {
+  return (dispatch, getState) => {
+    dispatch(setPage(1))
     dispatch(setSearchQuery(query))
     dispatch(setPage(1))
-    dispatch(fetchMovies())
+    dispatch(fetchMoviesStart())
   }
 }
 
 const toggleMyMovies = (myMovies) => {
   return dispatch => {
+    dispatch(setPage(1))
     dispatch(setMyMovies(myMovies))
-    dispatch(fetchMovies())
+    dispatch(fetchMoviesStart())
   }
 }
 
 const changePage = (selected) => {
   return dispatch => {
     dispatch(setPage(selected))
-    dispatch(fetchMovies())
+    dispatch(fetchMoviesStart())
   }
 }
 
-const rateMovie = (id, rating) => {
+
+// Service consumers
+
+const deleteMovieStart = (movideId) => {
   return dispatch => {
-    axios.post('/ratings',
-                  {
-                    rating:{
-                      movie_id: id,
-                      rate: rating
-                    }
-                  }
-      )
-      .then(response => {
-        dispatch(fetchMovies())
-        dispatch(fetchRatings())
-      }).catch((error) => console.log([error]))
+    moviesServices.deleteMovie(movideId)
+    .then(()=>{
+      dispatch(fetchMoviesStart())
+      dispatch(fetchCategoriesStart())
+      dispatch(fetchRatingsStart())
+      dispatch(
+          showNotification('Movie deleted successfully',
+                            'success'))
+    })
+  }
+}
+
+const submitMovieStart = () => {
+  return (dispatch, getState) => {
+    dispatch(setLoading(true))
+    // handle multi submit
+    if(!getState().movies.submittingMovie){
+      dispatch(setSubmitting(true))
+      const { editingMovie } = getState().movies
+      if(editingMovie.id){
+        moviesServices.updateMovie(editingMovie)
+        .then(() => dispatch(resetToDefaults('Movie updated successfully')))
+        .catch((error) => dispatch(showError(error)))
+        } else {
+        moviesServices.createMovie(editingMovie)
+        .then(() => dispatch(resetToDefaults('Movie created successfully')))
+        .catch((error) => dispatch(showError(error)))
+      }
+    }
+  }
+}
+
+export const fetchMoviesStart = () => {
+  return (dispatch, getState) => {
+    const movies = getState().movies
+    console.log(movies)
+    dispatch(setFetshingMovies(true))
+    dispatch(setLoading(true))
+    moviesServices.fetchMovies(movies)
+    .then((response) => {
+      dispatch(setPages(response.data.pagination.pages))
+      dispatch(moviesFetchSuccess(response.data.movies))
+      dispatch(setAllCount(response.data.pagination.all_count))
+      dispatch(setFetshingMovies(false))
+      dispatch(setLoading(false))
+    })
+    .catch((error)=> {
+      dispatch(setLoading(false))
+      dispatch(
+          showNotification(error.response.data,
+                            'danger'))
+    })
+  }
+}
+
+export const fetchCategoriesStart = () => {
+  return dispatch => {
+    moviesServices.fetchCategories()
+    .then((response) => {
+      dispatch(categoriesFetchSuccess(response.data))
+    })
+    .catch((error)=> {
+      dispatch(
+          showNotification(error.response.data,
+                            'danger'))
+    })
+  }
+}
+
+export const fetchRatingsStart = () => {
+  return dispatch => {
+    moviesServices.fetchRatings()
+    .then((response) => {
+      dispatch(ratingsFetchSuccess(response.data))
+    })
+    .catch((error)=> {
+      dispatch(
+          showNotification(error.response.data,
+                            'danger'))
+    })
+  }
+}
+
+export const rateMovieStart = (id, rating) => {
+  return dispatch => {
+    dispatch(setLoading(true))
+    moviesServices.rateMovie(id, rating)
+    .then((response) => {
+      dispatch(fetchMoviesStart())
+      dispatch(fetchRatingsStart())
+    })
+    .catch((error)=> {
+      dispatch(
+          showNotification(error.response.data,
+                            'danger'))
+    })
   }
 }
 
 const moviesActions = {
-  moviesIsLoading,
-  moviesErrored,
-  moviesFetchSuccess,
-  setLoading,
-  fetchMovies,
-  rateMovie,
+  fetchMoviesStart,
   filterByCategory,
   filterByRating,
-  fetchCategories,
-  fetchRatings,
-  searchMovies,
+  fetchCategoriesStart,
+  fetchRatingsStart,
   toggleMyMovies,
-  editMovie,
   newMovie,
-  submitMovie,
+  editMovie,
+  rateMovieStart,
+  searchMovies,
+  deleteMovieStart,
+  submitMovieStart,
   setEditingMovie,
-  deleteMovie,
   changePage,
   dismissModal,
 }
+
 
 export default moviesActions

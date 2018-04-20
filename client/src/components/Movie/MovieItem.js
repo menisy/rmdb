@@ -23,7 +23,7 @@ class MovieItem extends Component {
   render() {
     const { movie, currentUser } = this.props
     const { editable } = this.props
-    const userName = (movie.user_id == currentUser.attributes.id) ? 'You' : movie.user.nickname
+    const userName = (movie.user_id === currentUser.attributes.id) ? 'You' : movie.user.nickname
     let userRating, editMenu
 
     if(currentUser.isSignedIn){
