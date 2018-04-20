@@ -11,7 +11,6 @@ import configureStore from './redux/configureStore'
 
 import { verifyCredentials } from './redux-token-auth-config'
 
-
 const store = configureStore()
 // user auth
 verifyCredentials(store)

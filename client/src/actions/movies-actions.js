@@ -4,6 +4,9 @@ import { showNotification } from './notifications-actions'
 import emptyMovie from '../components/Movie/emptyMovie'
 
 
+// Set axios base url endpoint according to env
+axios.defaults.baseURL = process.env.REACT_APP_API_PATH
+
 const updateAuthHeaders = () => {
   axios.defaults.headers.common = {
     'access-token': localStorage.getItem('access-token'),

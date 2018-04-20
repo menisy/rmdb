@@ -81,7 +81,7 @@ class MoviesContainer extends Component {
                                onToggle={this.addNewMovie}
                                isActive={true}
                                color={"btn-success mr-2 my-2 w-5"}
-                               icon={"plus mr-1"}/>
+                               icon={"plus"}/>
     }
 
     return (

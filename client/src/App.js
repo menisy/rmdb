@@ -12,11 +12,6 @@ class App extends Component {
     super(props)
   }
 
-  componentDidMount = () => {
-    // Set axios base url endpoint according to env
-    axios.defaults.baseURL = process.env.REACT_APP_API_PATH
-  }
-
   render() {
     return (
       <div>

@@ -23,7 +23,7 @@ class SearchForm extends Component {
     return (
       <div className="nav-item my-2">
         <form className="form-inline" onSubmit={this.handleSubmit}>
-          <div className="input-group flex-sm-fill">
+          <div className="input-group w-100">
             <input ref={input => _search = input}
                     className="form-control col-12"
                     type="search"
