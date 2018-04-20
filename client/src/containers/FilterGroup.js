@@ -84,6 +84,7 @@ class FilterGroup extends Component {
                             onToggle={this.handleMoviesSelectToggle}
                             isActive={this.props.myMovies}
                             toggleBool={true}
+                            css="nav-item"
                             />
     }
     const {categories, ratings, activeCategory, activeRating} = this.props
@@ -94,6 +95,7 @@ class FilterGroup extends Component {
                   onToggle={this.handleMoviesSelectToggle}
                   isActive={!this.props.myMovies}
                   toggleBool={false}
+                  css="nav-item"
                   />
           {userButton}
         </nav>

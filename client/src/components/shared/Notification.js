@@ -16,18 +16,23 @@ const transitionStyles = {
   exisited: { opacity: 0}
 }
 
-const Notification = ({ in: inProp, notification, color }) =>
+const Notification = ({ in: inProp, notification, color, onHide }) =>
   <Transition in={inProp} timeout={duration}>
     {(transitionState) => {
       return (
-        <span style={{
-          ...defaultStyle,
-          ...transitionStyles[transitionState]
-        }} className={`msg alert alert-${color}`}>
-          {notification}
-        </span>
+          <div style={{
+            ...defaultStyle,
+            ...transitionStyles[transitionState]
+          }}  className={`alert alert-${color} text-center my-0 mx-auto alert-dismissible fade`}
+              role="alert">
+            <p className="p-3 my-0">{notification}</p>
+            <button type="button" onClick={onHide} className="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
       )
     }}
   </Transition>
 
 export default Notification
+

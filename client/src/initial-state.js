@@ -10,6 +10,13 @@ const initialState = {
     categoryFilter: '',
     ratingFilter: '',
     myMovies: false,
+    editingMovie: {
+      title: '',
+      description: '',
+      id: null,
+      category_id: null,
+    },
+    showModal: false,
 
     reduxTokenAuth: {
       currentUser: {

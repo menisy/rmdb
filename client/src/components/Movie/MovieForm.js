@@ -1,41 +1,80 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
 
-class MovieForm extends Component {
-  constructor(props) {
-    super(props)
-    const { movie } = this.props
-
-    this.state = {
-      title: movie.title,
-      description: movie.description
-    }
-  }
-
-  handleInput = (e) => {
-    this.props.resetNotification()
-    this.setState({[e.target.name]: e.target.value})
-  }
-
-
-  render() {
-    const { title, description } = this.state
-
-    return (
-      <div className="tile">
-        <form>
-          <input className="input" type="text" name="title"
-            placeholder="Enter a Title"
-            value={title}
-            onChange={this.handleInput}
-            ref={this.props.titleRef} />
-          <textarea className="input" name="description"
-            placeholder="Describe your movie"
-            value={description}
-            onChange={this.handleInput}></textarea>
-        </form>
+let MovieForm = props => {
+  const { handleSubmit, load, pristine, reset, submitting, categories} = props
+  const formTitle = (props.editingMovie.id) ? 'Edit movie' : 'Create new movie'
+  console.log(props.initialValues)
+  return (
+      <div className="modal fade" id="movieFormModal" tabIndex="-1"
+            role="dialog" aria-labelledby="movieFormModal" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title"
+                  id="exampleModalLongTitle">{formTitle}
+              </h5>
+              <button type="button" className="close"
+                      data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <form className="form" onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="title">Title</label>
+                  <Field name="title"
+                          component="input"
+                          type="text"
+                          className="form-control col-12"/>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="description">Description</label>
+                  <Field name="description"
+                          component="textarea"
+                          type="text"
+                          className="form-control col-12"/>
+                  <label htmlFor="category">Category</label>
+                  <Field name="category_id"
+                          component="select"
+                          className="form-control col-12">
+                    <option value="">Select one</option>
+                    {categories.map(category => (
+                      <option value={category.id} key={category.id}>
+                        {category.title}
+                      </option>
+                    ))}
+                  </Field>
+                </div>
+                <div className="float-right">
+                  <button type="button" className="btn btn-secondary mr-2"
+                          data-dismiss="modal">Close
+                  </button>
+                  <button type="submit"
+                          className="btn btn-success">Save changes
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     )
-  }
 }
+
+MovieForm = reduxForm({
+  form: 'movieForm',
+  enableReinitialize: true,
+})(MovieForm)
+
+MovieForm = connect(
+  state => ({
+    initialValues: state.movies.editingMovie,
+    editingMovie: state.movies.editingMovie,
+    categories: state.movies.categories
+  }),
+  {}
+)(MovieForm)
 
 export default MovieForm

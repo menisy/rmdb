@@ -66,8 +66,21 @@ textarea {
   margin-bottom: 0.1rem;
 }
 .alert-wrapper{
-    z-index: 99999;
-    top: 1.5rem;
-    position: fixed;
-    margin-left: 17%;
+  /* z-index to be over modal */
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.alert{
+  width: 70%;
+}
+.alert p{
+  width: 90%;
+  margin-left: 5%;
+}
+.card .card-body p.card-text{
+  max-height: 100px;
+  overflow: hidden;
 }

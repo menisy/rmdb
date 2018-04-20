@@ -11,6 +11,13 @@ const initialState = {
   categoryFilter: '',
   ratingFilter: '',
   myMovies: false,
+  editingMovie: {
+    title: '',
+    description: '',
+    id: null,
+    category_id: null,
+  },
+  showModal: false,
 }
 
 const moviesReducer = (state = initialState, { type, payload }) => {
@@ -33,6 +40,12 @@ const moviesReducer = (state = initialState, { type, payload }) => {
       return { ...state, categories: payload };
     case TYPES.RATINGS_FETCH_SUCCESS:
       return { ...state, ratings: payload };
+    case TYPES.SET_EDITING_MOVIE:
+      return { ...state, editingMovie: payload };
+    case TYPES.SET_MOVIE_SUBMITTED:
+      return { ...state, editingMovie: payload };
+    case TYPES.SET_SHOW_MODAL:
+      return { ...state, showModal: payload };
     default:
       return state;
   }

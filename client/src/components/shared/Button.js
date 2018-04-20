@@ -12,11 +12,17 @@ class Button extends Component{
   }
 
   render (){
-    const {title, isActive} = this.props
-    const active = (isActive) ? 'btn-outline-primary' : 'btn-outline-secondary'
+    const {title, isActive, icon, color, css} = this.props
+    const active = (isActive) ? 'btn-primary' : 'btn-outline-primary'
+    let iconTag
+    if(icon){
+      iconTag = <i className={`fa fa-${icon}`} />
+    }
     return (
-      <div className="nav-item my-xs-1 mb-sm-1">
-        <div className={`nav-link btn  ${active}`} onClick={this.handleToggle}>
+      <div className={`${css || ''} my-xs-1 mb-sm-1`}>
+        <div className={`nav-link btn ${active || ''}  ${color || ''}`}
+             onClick={this.handleToggle}>
+          {iconTag}
           {title}
         </div>
       </div>

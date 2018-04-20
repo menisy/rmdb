@@ -9,18 +9,10 @@ class MoviesList extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      editingMovieId: null,
-      signedIn: this.props.signedIn,
-      movies: []
-    }
     this.newMovie = this.newMovie.bind(this)
-    this.updateMovie = this.updateMovie.bind(this)
-    this.deleteMovie = this.deleteMovie.bind(this)
     this.rateMovie = this.rateMovie.bind(this)
-    this.resetNotification = this.resetNotification.bind(this)
-    this.enableEditing = this.enableEditing.bind(this)
-    this.handleSearch = this.handleSearch.bind(this)
+    this.editMovie = this.editMovie.bind(this)
+    this.deleteMovie = this.deleteMovie.bind(this)
   }
 
   componentDidMount = () => {
@@ -38,30 +30,23 @@ class MoviesList extends Component {
     this.props.onUpdateMovie(movie)
   }
 
-  deleteMovie = (id) => {
-    this.props.onDeleteMovie(id)
-  }
-
   rateMovie = (id, rating) => {
     this.props.onRatingMovie(id, rating)
   }
 
-  resetNotification = () => {
-    this.props.resetNotification({notification: '', transitionIn: false})
+  editMovie = (id) => {
+    this.props.onEditMovie(id)
   }
 
-  enableEditing = (id) => {
-    this.props.onEnableEditing(id)
-  }
-
-  handleSearch = (searchQuery) => {
-    this.props.onSearch(searchQuery)
+  deleteMovie = (id) => {
+    this.props.onDeleteMovie(id)
   }
 
 
   render() {
-    const { editingMovieId } = this.state
     const movies = this.props.movies
+    const { currentUser } = this.props
+    const userId = currentUser.attributes.id
 
     let emptyMsg
 
@@ -72,19 +57,13 @@ class MoviesList extends Component {
     return (
       <div className="mt-xs-2 row">
         {movies.map(movie => {
-          if(editingMovieId === movie.id) {
-            return (<MovieForm key={movie.id} movie={movie}
-                      titleRef={input => this.title = input}
-                      updateMovie={this.updateMovie}
-                      resetNotification={this.resetNotification} />)
-          } else {
             return (<Movie key={movie.id} movie={movie}
-                      onClick={this.enableEditing}
+                      onEdit={this.editMovie}
                       onDelete={this.deleteMovie}
+                      editable={movie.user_id === userId}
                       rateMovie={this.props.rateMovie}
-                      auth={this.props.auth}
+                      currentUser={currentUser}
                       />)
-          }
         })}
         <div className="empty-msg col-12 text-center">
           {emptyMsg}

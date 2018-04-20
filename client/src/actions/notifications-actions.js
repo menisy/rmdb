@@ -1,9 +1,17 @@
 import TYPES from '../shared/notifications-action-types'
+import errorsToSentences from '../shared/util/errorsToSentences'
 
 const setNotificationMessages = (msgs) => {
+  // check whether object or string
+  let message
+  if(typeof msgs === 'object'){
+    message = errorsToSentences(msgs)
+  }else{
+    message = msgs
+  }
   return {
     type: TYPES.SET_MESSAGES,
-    payload: msgs
+    payload: message
   }
 }
 
@@ -21,16 +29,14 @@ const setTranstion = (bool) => {
   }
 }
 
-const hideNotification = () => {
+export const hideNotification = () => {
   return dispatch => {
     dispatch(setTranstion(false))
-    dispatch(setNotificationMessages([]))
-    dispatch(setNotificationColor(''))
   }
 }
 
 
-const showNotification = (messages, color) => {
+export const showNotification = (messages, color) => {
   return dispatch => {
     dispatch(setNotificationMessages(messages))
     dispatch(setNotificationColor(color))

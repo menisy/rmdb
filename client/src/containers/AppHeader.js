@@ -14,6 +14,7 @@ class AppHeader extends Component {
 
     this.handleSignIn = this.handleSignIn.bind(this)
     this.handleSignOut = this.handleSignOut.bind(this)
+    this.handleHideNotification = this.handleHideNotification.bind(this)
   }
 
   handleSignIn = (email, password) => {
@@ -43,6 +44,10 @@ class AppHeader extends Component {
     })
   }
 
+  handleHideNotification = () => {
+    this.props.hideNotification()
+  }
+
   render(){
     let userArea
     const { isSignedIn, attributes } = this.props.currentUser
@@ -56,8 +61,11 @@ class AppHeader extends Component {
 
     return (
       <div>
-        <div className="alert-wrapper">
-          <Notification in={transition} notification={messages} color={color}/>
+        <div className="alert-wrapper my-2 mw-100">
+          <Notification in={transition}
+                        onHide={this.handleHideNotification}
+                        notification={messages}
+                        color={color}/>
         </div>
         <nav className="navbar navbar-expand-lg
                         fixed-top navbar-dark
@@ -78,8 +86,7 @@ class AppHeader extends Component {
 
             <div className="collapse navbar-dark navbar-collapse"
                  id="topNavBar">
-              <div className="navbar-nav mr-auto mt-2 mt-lg-0">
-              </div>
+              <div className="navbar-nav mr-auto mt-2 mt-lg-0"></div>
               {userArea}
             </div>
           </div>

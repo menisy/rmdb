@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import Rating from '../Rating/Rating'
+import Button from '../shared/Button'
+import EditMenu from './EditMenu'
+import Timeago from 'react-timeago'
 
 class Movie extends Component {
   constructor(props){
@@ -10,7 +13,7 @@ class Movie extends Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
 
-  handleEdit = () => { this.props.onClick(this.props.movie.id) }
+  handleEdit = () => { this.props.onEdit(this.props.movie) }
 
   handleDelete = () => { this.props.onDelete(this.props.movie.id) }
 
@@ -19,37 +22,47 @@ class Movie extends Component {
   }
 
   render() {
-    const { title, description, id, average_rating } = this.props.movie
-    const signedIn = this.props.auth.currentUser.isSignedIn
-    let userRating
+    const { movie } = this.props
+    const { isSignedIn } = this.props.currentUser
+    const { editable } = this.props
+    let userRating, editMenu
 
-    if(signedIn){
+    if(isSignedIn){
       userRating = <li className="list-group-item">Your rating
-                    <Rating key={id}
-                            id={id}
-                            rating={average_rating}
-                            onRating={this.handleRating}
-                            editable={signedIn}/>
+                      <Rating key={movie.id}
+                              id={movie.id}
+                              rating={movie.user_rating}
+                              onRating={this.handleRating}
+                              editable={isSignedIn}/>
                    </li>
+    }
+    if(editable){
+      editMenu =  <EditMenu
+                    onEdit={this.handleEdit}
+                    onDelete={this.handleDelete}/>
     }
 
     return (
       <div className="col-md-6 col-lg-4 col-xl-3 mb-3">
-        <div className="card">
+        <div className="card h-100">
           <div className="card-body">
-            <h5 className="card-title">{title}</h5>
-            <p className="card-text">{description}</p>
+            <h5 className="card-title">{movie.title}</h5>
+            <p className="card-text">{movie.description}</p>
           </div>
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
               Users rating
-              <Rating key={id} id={id} rating={average_rating} editable={false}/>
+              <Rating key={movie.id} id={movie.id} rating={movie.average_rating} editable={false}/>
             </li>
             {userRating}
           </ul>
-          <div className="card-body">
-            <a href="#" className="card-link">Card link</a>
-            <a href="#" className="card-link">Another link</a>
+          <div className="card-footer">
+            {editMenu}
+            <p className="card-text">
+              <small className="text-muted">
+                By {movie.user.nickname} <Timeago date={movie.created_at} />
+              </small>
+            </p>
           </div>
         </div>
       </div>

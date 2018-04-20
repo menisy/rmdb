@@ -24,12 +24,12 @@ class SearchForm extends Component {
       <div className="nav-item my-2">
         <form className="form-inline" onSubmit={this.handleSubmit}>
           <div className="input-group flex-sm-fill">
-            <input
-              ref={input => _search = input}
-              className="form-control col-12"
-              type="search"
-              placeholder="Search" aria-label="Search"
-              id="movies-search" onChange={this.handleChange}></input>
+            <input ref={input => _search = input}
+                    className="form-control col-12"
+                    type="search"
+                    placeholder="Search" aria-label="Search"
+                    id="movies-search" onChange={this.handleChange}>
+              </input>
             <div className="input-group-append">
               <div className="input-group-text">
                 <i className="fa fa-search"/>

@@ -5,6 +5,7 @@ const config = {
   authUrl,
   userAttributes: {
     username: 'nickname',
+    id: 'id'
   },
   userRegistrationAttributes: {
     username: 'nickname',
