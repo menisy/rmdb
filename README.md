@@ -10,6 +10,6 @@
 - [x] Add API tests
 - [x] Create client components
 - [x] Add search and filter functionality Client
-- [ ] Add client tests
 - [x] Make it pretty using Bootstrap
-- [ ] Deploy to Heroku
+- [x] Deploy to Heroku
+- [ ] Add client tests
