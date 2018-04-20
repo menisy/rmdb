@@ -4,18 +4,19 @@ module Api::V1
     before_action :authenticate_api_v1_user!, only: [:create, :update, :destroy, :user_movies]
     before_action :ensure_ownership         , only: [:update, :destroy]
     before_action :check_mine_param         , only: [:index]
-    before_action :set_pagination           , only: [:index, :user_movies]
 
     # GET /movies
     def index
       @movies = filter(@movies)
       @movies = search(@movies)
+      set_pagination
       #render json: @movies
     end
 
     def user_movies
       @user_movies = filter(current_api_v1_user.movies)
       @user_movies = search(@user_movies)
+      set_pagination
       render :index
     end
 
@@ -85,12 +86,15 @@ module Api::V1
 
       # Set the variables for pagination
       def set_pagination
+        all_count = @movies.count
         page = params[:page].to_i
         per = params[:per].to_f
         per = 12 if per.zero?
         @movies = @movies.page(page).
                           per(per)
-        @page, @per, @pages = page, per, @movies.total_pages
+        @page, @per, @pages, @all_count = page, per,
+                                          @movies.total_pages,
+                                          all_count
       end
 
       # Check for mine param

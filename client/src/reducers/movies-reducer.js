@@ -11,6 +11,10 @@ const initialState = {
   categoryFilter: '',
   ratingFilter: '',
   myMovies: false,
+  all_count: 0,
+  page: 1,
+  per: 12,
+  pages: 0,
   editingMovie: {
     title: '',
     description: '',
@@ -19,6 +23,7 @@ const initialState = {
   },
   showModal: false,
 }
+
 
 const moviesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -42,6 +47,12 @@ const moviesReducer = (state = initialState, { type, payload }) => {
       return { ...state, ratings: payload };
     case TYPES.SET_EDITING_MOVIE:
       return { ...state, editingMovie: payload };
+    case TYPES.SET_PAGE:
+      return { ...state, page: payload };
+    case TYPES.SET_PAGES:
+      return { ...state, pages: payload };
+    case TYPES.SET_ALL_COUNT:
+      return { ...state, all_count: payload };
     case TYPES.SET_MOVIE_SUBMITTED:
       return { ...state, editingMovie: payload };
     case TYPES.SET_SHOW_MODAL:

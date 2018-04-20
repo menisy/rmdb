@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 
 let MovieForm = props => {
-  const { handleSubmit, load, pristine, reset, submitting, categories} = props
+  const { handleSubmit, onDismiss, categories} = props
   const formTitle = (props.editingMovie.id) ? 'Edit movie' : 'Create new movie'
   console.log(props.initialValues)
   return (
@@ -16,7 +16,8 @@ let MovieForm = props => {
                   id="exampleModalLongTitle">{formTitle}
               </h5>
               <button type="button" className="close"
-                      data-dismiss="modal" aria-label="Close">
+                      data-dismiss="modal" aria-label="Close"
+                      onClick={onDismiss}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -49,7 +50,8 @@ let MovieForm = props => {
                 </div>
                 <div className="float-right">
                   <button type="button" className="btn btn-secondary mr-2"
-                          data-dismiss="modal">Close
+                          data-dismiss="modal"
+                          onClick={onDismiss}>Close
                   </button>
                   <button type="submit"
                           className="btn btn-success">Save changes

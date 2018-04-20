@@ -1,9 +1,21 @@
 import axios from 'axios'
 import TYPES from '../shared/movie-action-types'
-import updateAuthHeaders from '../shared/util/updateAuthHeaders'
 import { showNotification } from './notifications-actions'
 import emptyMovie from '../components/Movie/emptyMovie'
 
+
+const updateAuthHeaders = () => {
+  axios.defaults.headers.common = {
+    'access-token': localStorage.getItem('access-token'),
+    'client': localStorage.getItem('client'),
+    'uid': localStorage.getItem('uid')
+  }
+  axios.defaults.headers.post = {
+    'access-token': localStorage.getItem('access-token'),
+    'client': localStorage.getItem('client'),
+    'uid': localStorage.getItem('uid')
+  }
+}
 
 const setSearchQuery = (query) => {
   return {
@@ -30,13 +42,6 @@ const setRatingFilter = (rating) => {
   return {
     type: TYPES.SET_RATING_FILTER,
     payload: rating
-  }
-}
-
-const rateMovieSuccess = (ratingMovie) => {
-  return {
-    type: TYPES.RATE_MOVIE_SUCCESS,
-    payload: ratingMovie
   }
 }
 
@@ -96,6 +101,27 @@ const setEditingMovie = (movie) => {
   }
 }
 
+const setPage = (page) => {
+  return {
+    type: TYPES.SET_PAGE,
+    payload: page
+  }
+}
+
+const setAllCount = (allCount) => {
+  return {
+    type: TYPES.SET_ALL_COUNT,
+    payload: allCount
+  }
+}
+
+const setPages = (pages) => {
+  return {
+    type: TYPES.SET_PAGES,
+    payload: pages
+  }
+}
+
 const editMovie = (movie) => {
   return dispatch => {
     dispatch(setEditingMovie(movie))
@@ -112,6 +138,7 @@ const newMovie = () => {
 
 const submitMovie = () => {
   return (dispatch, getState) => {
+    console.log(axios.defaults.headers.common)
     const { editingMovie } = getState().movies
     if(editingMovie.id){
       dispatch(updateMovie(editingMovie))
@@ -121,13 +148,19 @@ const submitMovie = () => {
   }
 }
 
-const updateMovie = (movie) => {
+const dismissModal = () => {
+  return dispatch => {
+    dispatch(setShowModal(false))
+  }
+}
+
+const createMovie = (movie) => {
   return (dispatch, getState) => {
     updateAuthHeaders()
     // Remove id from movie since it's rejected by
     // backend's permit param
     let {id, ...safeMovie} = movie
-    axios.put(`/movies/${movie.id}`,
+    axios.post('/movies',
                 {
                     movie: safeMovie
                 })
@@ -135,6 +168,35 @@ const updateMovie = (movie) => {
         dispatch(setEditingMovie(emptyMovie))
         dispatch(setShowModal(false))
         dispatch(fetchMovies())
+        dispatch(fetchCategories())
+        dispatch(
+          showNotification('Movie created successfully',
+                            'success'))
+      })
+      .catch((error) => {
+        dispatch(
+          showNotification(error.response.data,
+                            'danger'))
+      })
+  }
+}
+
+const updateMovie = (movie) => {
+  return (dispatch, getState) => {
+    const headers = updateAuthHeaders.authHeaders
+    // Remove id from movie since it's rejected by
+    // backend's permit param
+    let {id, ...safeMovie} = movie
+    axios.put(`/movies/${movie.id}`,
+                {
+                    movie: safeMovie
+                },
+                {headers: { ...headers}})
+      .then(response => {
+        dispatch(setEditingMovie(emptyMovie))
+        dispatch(setShowModal(false))
+        dispatch(fetchMovies())
+        dispatch(fetchCategories())
         dispatch(
           showNotification('Movie updated successfully',
                             'success'))
@@ -158,6 +220,8 @@ const deleteMovie = (movieId) => {
         dispatch(
           showNotification('Movie deleted successfully',
                             'success'))
+          dispatch(fetchCategories())
+          dispatch(fetchRatings())
       })
       .catch((error) => {
         dispatch(
@@ -167,35 +231,11 @@ const deleteMovie = (movieId) => {
   }
 }
 
-const createMovie = (movie) => {
-  return (dispatch, getState) => {
-    updateAuthHeaders()
-    // Remove id from movie since it's rejected by
-    // backend's permit param
-    let {id, ...safeMovie} = movie
-    axios.post('/movies',
-                {
-                    movie: safeMovie
-                })
-      .then(response => {
-        dispatch(setEditingMovie(emptyMovie))
-        dispatch(setShowModal(false))
-        dispatch(fetchMovies())
-        dispatch(
-          showNotification('Movie created successfully',
-                            'success'))
-      })
-      .catch((error) => {
-        dispatch(
-          showNotification(error.response.data,
-                            'danger'))
-      })
-  }
-}
 
 export const fetchMovies = () => {
   return (dispatch, getState) => {
-    const { searchQuery, categoryFilter, ratingFilter, myMovies } = getState().movies
+    const { searchQuery, categoryFilter,
+             ratingFilter, myMovies, page, per } = getState().movies
     dispatch(setLoading(true))
     updateAuthHeaders()
     axios.get('/movies',{
@@ -203,12 +243,16 @@ export const fetchMovies = () => {
                     text: searchQuery,
                     rating: ratingFilter,
                     category_id: categoryFilter,
-                    mine: myMovies
+                    mine: myMovies,
+                    page: page,
+                    per: per,
                   }
                 })
       .then(response => {
         dispatch(setLoading(false))
-        dispatch(moviesFetchSuccess(response.data))
+        dispatch(setPages(response.data.pagination.pages))
+        dispatch(setAllCount(response.data.pagination.all_count))
+        dispatch(moviesFetchSuccess(response.data.movies))
       })
       .catch((error) => {
         dispatch(setLoading(false))
@@ -277,6 +321,13 @@ const toggleMyMovies = (myMovies) => {
   }
 }
 
+const changePage = (selected) => {
+  return dispatch => {
+    dispatch(setPage(selected))
+    dispatch(fetchMovies())
+  }
+}
+
 const rateMovie = (id, rating) => {
   return dispatch => {
     axios.post('/ratings',
@@ -289,6 +340,7 @@ const rateMovie = (id, rating) => {
       )
       .then(response => {
         dispatch(fetchMovies())
+        dispatch(fetchRatings())
       }).catch((error) => console.log([error]))
   }
 }
@@ -310,7 +362,9 @@ const moviesActions = {
   newMovie,
   submitMovie,
   setEditingMovie,
-  deleteMovie
+  deleteMovie,
+  changePage,
+  dismissModal,
 }
 
 export default moviesActions

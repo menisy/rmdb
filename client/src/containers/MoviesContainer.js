@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import { connect } from 'react-redux'
 import MoviesList from '../components/Movie/MoviesList'
-import Movie from '../components/Movie/Movie'
 import MovieForm from '../components/Movie/MovieForm'
-import Notification from '../components/shared/Notification'
 import SearchForm from '../components/Search/SearchForm'
 import LoadingSpinner from '../components/shared/LoadingSpinner'
 import moviesActions from '../actions/movies-actions'
-import emptyMovie from '../components/Movie/emptyMovie'
 import Button from '../components/shared/Button'
 import $ from 'jquery'
+import Pagination from '../components/Movie/Pagination';
+
 
 class MoviesContainer extends Component {
   constructor(props) {
@@ -20,25 +18,12 @@ class MoviesContainer extends Component {
     this.editMovie = this.editMovie.bind(this)
     this.deleteMovie = this.deleteMovie.bind(this)
     this.submitMovie = this.submitMovie.bind(this)
-    this.resetNotification = this.resetNotification.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
+    this.handlePageClick = this.handlePageClick.bind(this)
   }
 
   componentDidMount = () => {
     this.props.fetchMovies()
-  }
-
-  setSearch = (searchQuery, myMovies = false) => {
-    this.setState({searchQuery}, () => this.fetchMovies())
-  }
-
-  updateMovie = (movie) => {
-    const { movies } = this.state
-    this.setState({
-      movies: movies.map(x => x.id === movie.id ? movie : x),
-      notification: 'All changes saved',
-      transitionIn: true
-    })
   }
 
   deleteMovie = (id) => {
@@ -51,10 +36,12 @@ class MoviesContainer extends Component {
   }
 
   submitMovie = (movie) => {
-    console.log('herreee')
-    console.log(movie)
     this.props.setEditingMovie(movie)
     this.props.submitMovie()
+  }
+
+  dismissModal = () => {
+    this.props.dismissModal()
   }
 
   editMovie = (movie) => {
@@ -62,19 +49,17 @@ class MoviesContainer extends Component {
     $('#movieFormModal').modal('show')
   }
 
-  resetNotification = () => {this.setState({notification: '', transitionIn: false})}
-
-  changeSort = (value) => {
-    this.setState({sortBy: value}, () => this.fetchMovies())
-  }
-
   handleSearch = (searchQuery) => {
-    if(searchQuery.trim().length > 0){
-      this.props.searchMovies(searchQuery)
-    }
+    this.props.searchMovies(searchQuery)
   }
 
-  checkShowModal(){
+  handlePageClick = (page) => {
+    // increment 1 because here is 0 based
+    // backend is 1 based
+    this.props.changePage(page.selected + 1)
+  }
+
+  checkShowModal = () => {
     if(this.props.movies.showModal){
       $('#movieFormModal').modal('show')
     }else{
@@ -83,12 +68,13 @@ class MoviesContainer extends Component {
   }
 
   render() {
-    // check to see if we need to display the movie modal
+
+    // check to see if we need to display form modal
     this.checkShowModal()
 
     const { currentUser, rateMovie } = this.props
-    const { movies, isLoading, editingMovie } = this.props.movies
-    let newMovieButton, formMovie, formTitle
+    const { movies, isLoading, searchQuery, pages } = this.props.movies
+    let newMovieButton
 
     if(currentUser.isSignedIn){
       newMovieButton = <Button title="Add a new movie"
@@ -97,25 +83,17 @@ class MoviesContainer extends Component {
                                color="btn-success mr-2 my-2 w-5" />
     }
 
-    if(editingMovie.id){
-      formMovie = movies.filter( movie => {return movie.id == editingMovie.id} )[0]
-      formTitle = 'Edit your movie'
-    }else{
-      formMovie = emptyMovie
-      formTitle = 'Create a new movie'
-    }
-
     return (
       <div className="mt-xs-2">
-        <div className="position-fixed">
-          {/*<Notification in={transitionIn} notification={notification}/>*/}
-        </div>
         <nav className="nav nav-fill justify-content-end form-inline">
           {newMovieButton}
           <SearchForm handleSearch={this.handleSearch}/>
         </nav>
         <LoadingSpinner isLoading={isLoading}/>
-        <MovieForm  onSubmit={this.submitMovie}/>
+        <MovieForm  onSubmit={this.submitMovie}
+                    onDismiss={this.dismissModal}/>
+        <Pagination movies={this.props.movies}
+                    onPageChange={this.handlePageClick}/>
         <MoviesList movies={movies}
                     currentUser={currentUser}
                     rateMovie={rateMovie}
@@ -143,7 +121,9 @@ const bindActionsToDispatch = ({
       newMovie: moviesActions.newMovie,
       deleteMovie: moviesActions.deleteMovie,
       submitMovie: moviesActions.submitMovie,
-      setEditingMovie: moviesActions.setEditingMovie
+      setEditingMovie: moviesActions.setEditingMovie,
+      changePage: moviesActions.changePage,
+      dismissModal: moviesActions.dismissModal,
   })
 
 export default connect(mapStateToProps, bindActionsToDispatch)(MoviesContainer)

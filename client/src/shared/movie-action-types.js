@@ -19,6 +19,9 @@ const TYPES = createConstantObject(
   'UPDATE_MOVIE_SUCCEED',
   'UPDATE_MOVIE_ERROR',
   'MOVIE_SUBMITTED',
+  'SET_PAGE',
+  'SET_PAGES',
+  'SET_ALL_COUNT',
 );
 
 export default TYPES

@@ -6,10 +6,11 @@ const errorsToSentence = (errors) => {
   }
   var allErrors = ''
   Object.keys(errors).forEach((key, index) => {
-    const comma = (index == 0) ? '' : ','
-    allErrors = `${allErrors}${comma} ${key} ${arrayToSentence(errors[key])}`
+    const comma = (index === 0) ? '' : ','
+    const titledKey = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase()
+    allErrors = `${allErrors}${comma} ${titledKey} ${arrayToSentence(errors[key])}`
   })
-  return allErrors
+  return allErrors + '!'
 }
 
 export default errorsToSentence

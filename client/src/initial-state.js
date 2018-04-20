@@ -16,6 +16,10 @@ const initialState = {
       id: null,
       category_id: null,
     },
+    all_count: 0,
+    page: 1,
+    per: 12,
+    pages: 0,
     showModal: false,
 
     reduxTokenAuth: {

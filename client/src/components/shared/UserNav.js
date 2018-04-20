@@ -15,7 +15,10 @@ class UserNav extends Component {
     const { username } = this.props.attributes
     return (
       <div className="d-flex">
-        <h5 className="text-light my-2 mx-2">{username}</h5>
+        <h5 className="text-light my-2 mx-3">
+          <i className="fa fa-user mx-2"/>
+          Hello, {username}
+        </h5>
         <a href="#logout" className="btn btn-outline-danger" onClick={this.handleSignOut}>
           Sign out
         </a>

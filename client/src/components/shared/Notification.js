@@ -17,7 +17,7 @@ const transitionStyles = {
 }
 
 const Notification = ({ in: inProp, notification, color, onHide }) =>
-  <Transition in={inProp} timeout={duration}>
+  <Transition in={inProp} timeout={duration} unmountOnExit={true}>
     {(transitionState) => {
       return (
           <div style={{
@@ -35,4 +35,3 @@ const Notification = ({ in: inProp, notification, color, onHide }) =>
   </Transition>
 
 export default Notification
-

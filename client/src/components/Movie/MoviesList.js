@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-import Movie from './Movie'
-import MovieForm from './MovieForm'
-import Notification from '../shared/Notification'
-import SearchForm from '../Search/SearchForm'
-import Button from '../shared/Button'
+import MovieItem from './MovieItem'
 
 class MoviesList extends Component {
   constructor(props) {
@@ -51,13 +47,16 @@ class MoviesList extends Component {
     let emptyMsg
 
     if(movies.length === 0 && !this.props.isLoading){
-      emptyMsg = <h5><i className="far fa-frown frowny"/>ops! No movies here, try changing the search query or reset the filters.</h5>
+      emptyMsg = <h5 className="mt-2">
+                  <i className="far fa-frown frowny"/>
+                  ops! No movies here, try changing the search query or reset the filters.
+                  </h5>
     }
 
     return (
       <div className="mt-xs-2 row">
         {movies.map(movie => {
-            return (<Movie key={movie.id} movie={movie}
+            return (<MovieItem key={movie.id} movie={movie}
                       onEdit={this.editMovie}
                       onDelete={this.deleteMovie}
                       editable={movie.user_id === userId}
