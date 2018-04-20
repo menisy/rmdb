@@ -60,8 +60,8 @@ class MovieItem extends Component {
           </ul>
           <div className="card-footer">
             {editMenu}
-            <p className="card-text">
-              <small className="text-muted mx-2">
+            <p className="card-text text-center">
+              <small className="text-muted mx-1">
                 By <strong>{userName}</strong>
               </small>
               <small>
