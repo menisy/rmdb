@@ -21,18 +21,18 @@ class MovieItem extends Component {
   }
 
   render() {
-    const { movie } = this.props
-    const { isSignedIn } = this.props.currentUser
+    const { movie, currentUser } = this.props
     const { editable } = this.props
+    const userName = (movie.user_id == currentUser.attributes.id) ? 'You' : movie.user.nickname
     let userRating, editMenu
 
-    if(isSignedIn){
+    if(currentUser.isSignedIn){
       userRating = <li className="list-group-item">Your rating
                       <Rating key={movie.id}
                               id={movie.id}
                               rating={movie.user_rating}
                               onRating={this.handleRating}
-                              editable={isSignedIn}/>
+                              editable={currentUser.isSignedIn}/>
                    </li>
     }
     if(editable){
@@ -62,7 +62,7 @@ class MovieItem extends Component {
             {editMenu}
             <p className="card-text">
               <small className="text-muted">
-                By <strong>{movie.user.nickname}</strong>
+                By <strong>{userName}</strong>
                 <br/>
                 <Timeago date={movie.created_at} />
               </small>

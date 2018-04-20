@@ -10,6 +10,9 @@ import moviesActions from './actions/movies-actions'
 class App extends Component {
   constructor(props) {
     super(props)
+  }
+
+  componentDidMount = () => {
     // Set axios base url endpoint according to env
     axios.defaults.baseURL = process.env.REACT_APP_API_PATH
   }
