@@ -25,7 +25,7 @@ module Api::V1
 
     # POST /movies
     def create
-      @movie = Movie.new(movie_params)
+      @movie = current_api_v1_user.movies.new(movie_params)
 
       if @movie.save
         render json: @movie, status: :created

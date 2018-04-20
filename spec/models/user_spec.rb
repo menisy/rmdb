@@ -11,7 +11,7 @@ describe User, :type => :model do
     it "shouldn't create user with invalid email" do
       user = build(:user, email: 'notanemail')
       user.valid?
-      expect(user.errors[:email]).to include("Invalid Email Address")
+      expect(user.errors[:email]).to include("is not an email")
     end
 
     it "shouldn't create user with blank nickname" do

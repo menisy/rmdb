@@ -141,6 +141,8 @@ describe "Movies API requests" do
       expect(response).to be_success
       # make sure the movie is created
       expect(Movie.count).to eq(1)
+      # make sure it's his movie
+      expect(Movie.first.user).to eq(user)
     end
 
     it 'should not be allowed to edit a movie they do not own' do
