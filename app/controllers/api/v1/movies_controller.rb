@@ -4,23 +4,23 @@ module Api::V1
     before_action :authenticate_api_v1_user!, only: [:create, :update, :destroy, :user_movies]
     before_action :ensure_ownership         , only: [:update, :destroy]
     before_action :check_mine_param         , only: [:index]
+    before_action :set_pagination           , only: [:index, :user_movies]
 
     # GET /movies
     def index
       @movies = filter(@movies)
       @movies = search(@movies)
-      render json: @movies
+      #render json: @movies
     end
 
     def user_movies
       @user_movies = filter(current_api_v1_user.movies)
       @user_movies = search(@user_movies)
-      render json: @user_movies
+      render :index
     end
 
     # GET /movies/1
     def show
-      render json: @movie
     end
 
     # POST /movies
@@ -83,6 +83,16 @@ module Api::V1
         end
       end
 
+      # Set the variables for pagination
+      def set_pagination
+        page = params[:page].to_i
+        per = params[:per].to_f
+        per = 12 if per.zero?
+        @movies = @movies.page(page).
+                          per(per)
+        @page, @per, @pages = page, per, @movies.total_pages
+      end
+
       # Check for mine param
       def check_mine_param
         if params[:mine].present? &&
@@ -90,13 +100,14 @@ module Api::V1
             current_api_v1_user
           @movies = current_api_v1_user.movies
         else
-          @movies = Movie
+          @movies = Movie.includes(:user, :category, :ratings)
         end
       end
 
       # Only allow a trusted parameter "white list" through.
       def movie_params
-        params.require(:movie).permit(:title, :description, :category_id, :user_id)
+        params.require(:movie).permit(:title, :description,
+                                       :category_id, :user_id)
       end
   end
 end

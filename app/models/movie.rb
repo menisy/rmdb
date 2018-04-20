@@ -1,6 +1,6 @@
 class Movie < ApplicationRecord
   include PgSearch
-  
+
   # Relations
   belongs_to :category
   belongs_to :user
@@ -44,17 +44,5 @@ class Movie < ApplicationRecord
     avg = sum.to_f / ratings.count if ratings.any?
     self.average_rating = avg.round(1)
     save
-  end
-
-  # Override as_json to include category and user
-  def as_json(options = { })
-    # check for as_json(nil) and bypasses
-    # our default...
-    super((options || { }).merge({
-      include: {
-        category: { only: [ :title, :id ] },
-        user:     { only: :nickname }
-      }
-    }))
   end
 end

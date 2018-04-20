@@ -14,4 +14,11 @@ class User < ApplicationRecord
   # Validations
   validates :nickname , presence: true,
                         uniqueness: { case_sensitive: false }
+
+
+  # Methods
+  def rating_for_movie(movie)
+    rating = self.ratings.find_by movie_id: movie.id
+    rating ? rating.rate : 0
+  end
 end

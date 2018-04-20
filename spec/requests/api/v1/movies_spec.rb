@@ -47,6 +47,10 @@ describe "Movies API requests" do
     it 'should return movies within a category' do
       pending "to be implemented"
     end
+
+    it 'should return movies paginated' do
+      pending "to be implemented"
+    end
   end
 
   context "non logged in users" do
@@ -57,6 +61,9 @@ describe "Movies API requests" do
       expect(response).to be_success
     end
 
+    ### Not working after using jbuilder
+    ### known issue, see
+    # https://github.com/rails/rails/issues/25183
     it 'should respond with movies list' do
       movies = create_list(:movie, 10)
       get api_v1_movies_path

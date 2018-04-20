@@ -46,8 +46,17 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise_token_auth'
 gem 'omniauth'
 
+# JSON views
+gem 'jbuilder'
+
 # Search
 gem 'pg_search'
 
 # Cross origin requests
 gem 'rack-cors', :require => 'rack/cors'
+
+# Pagination
+gem 'kaminari'
+
+# Finally...
+gem 'api-pagination'
