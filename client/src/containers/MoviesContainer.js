@@ -73,7 +73,7 @@ class MoviesContainer extends Component {
     this.checkShowModal()
 
     const { currentUser, rateMovie } = this.props
-    const { movies, isLoading, searchQuery, pages } = this.props.movies
+    const { movies, isLoading } = this.props.movies
     let newMovieButton
 
     if(currentUser.isSignedIn){
