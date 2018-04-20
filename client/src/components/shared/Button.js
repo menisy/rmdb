@@ -16,7 +16,7 @@ class Button extends Component{
     const active = (isActive) ? 'btn-primary' : 'btn-outline-primary'
     let iconTag
     if(icon){
-      iconTag = <i className={`fa fa-${icon}`} />
+      iconTag = <i className={`fa fa-${icon} mr-1`} />
     }
     return (
       <div className={`${css || ''} my-xs-1 mb-sm-1`}>
