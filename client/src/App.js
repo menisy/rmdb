@@ -10,8 +10,8 @@ import moviesActions from './actions/movies-actions'
 class App extends Component {
   constructor(props) {
     super(props)
-    // Set axios defaults
-    axios.defaults.baseURL = 'http://localhost:3001/api/v1'
+    // Set axios base url endpoint according to env
+    axios.defaults.baseURL = process.env.REACT_APP_API_PATH
   }
 
   render() {
