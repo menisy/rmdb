@@ -89,7 +89,7 @@ class FilterGroup extends Component {
     }
     const {categories, ratings, activeCategory, activeRating} = this.props
     return (
-      <div className="filters">
+      <div className="filters sticky-top">
         <nav className="nav nav-fill justify-content-center form-inline my-2">
           <Button title="All Movies"
                   onToggle={this.handleMoviesSelectToggle}

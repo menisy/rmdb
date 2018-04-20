@@ -1,5 +1,5 @@
 body{
-  padding-top: 5rem;
+  padding-top: 4rem;
   background-color: #f4f4f4;
 }
 .app-logo{
@@ -14,6 +14,10 @@ body{
 .cursor-ptr{
   cursor: pointer;
 }
+.filters{
+  top: 4.4rem;
+}
+
 .frowny{
   margin-right: 0.1rem;
   margin-bottom: 0.1rem;
