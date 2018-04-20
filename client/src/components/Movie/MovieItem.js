@@ -44,7 +44,7 @@ class MovieItem extends Component {
     return (
       <div className="col-sm-4 col-md-6 col-lg-4 col-xl-3 mb-3">
         <div className="card h-100">
-          <div className="card-body">
+          <div className="card-body text-center">
             <h5 className="card-title">{movie.title}</h5>
             <p className="card-text">{movie.description}</p>
           </div>
