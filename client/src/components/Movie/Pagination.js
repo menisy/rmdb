@@ -5,7 +5,7 @@ class Pagination extends Component {
 
 
   render(){
-    const { movies, searchQuery, pages, all_count } = this.props.movies
+    const { movies, searchQuery, pages, page, all_count } = this.props.movies
     let searchResultsMsg
     if(searchQuery.trim().length > 0){
       searchResultsMsg = <div className="d-inline-block">
@@ -33,6 +33,8 @@ class Pagination extends Component {
                  breakLabel={<a href="">...</a>}
                  breakClassName={"break-me"}
                  pageCount={pages}
+                 initialPage={page-1}
+                 forcePage={page-1}
                  marginPagesDisplayed={2}
                  pageRangeDisplayed={5}
                  pageLinkClassName={"nav-link mx-1"}

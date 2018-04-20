@@ -5,7 +5,6 @@ import { Field, reduxForm } from 'redux-form'
 let MovieForm = props => {
   const { handleSubmit, onDismiss, categories} = props
   const formTitle = (props.editingMovie.id) ? 'Edit movie' : 'Create new movie'
-  console.log(props.initialValues)
   return (
       <div className="modal fade" id="movieFormModal" tabIndex="-1"
             role="dialog" aria-labelledby="movieFormModal" aria-hidden="true">

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { signInUser, signOutUser } from '../redux-token-auth-config'
 import { fetchMovies } from '../actions/movies-actions'
 import notificationsActions from '../actions/notifications-actions'
+import logo from '../logo.svg'
 
 class AppHeader extends Component {
 
@@ -71,9 +72,10 @@ class AppHeader extends Component {
                         fixed-top navbar-dark
                         bg-dark justify-content-between">
           <div className="container">
-            <a className="navbar-brand mt-2" href="#">
-              <h3>ReactMovieDB</h3>
+            <a className="" href="#">
+              <img src={logo} className="app-logo d-inline-block mb-2" alt="logo"/>
             </a>
+            <h3 className="text-white">ReactMovieDB</h3>
             <button className="navbar-toggler"
                     type="button"
                     data-toggle="collapse"

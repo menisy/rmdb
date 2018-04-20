@@ -2,61 +2,14 @@ body{
   padding-top: 5rem;
   background-color: #f4f4f4;
 }
-
-.tile {
-  height: 150px;
-  width: 150px;
-  margin: 10px;
-  background: lightyellow;
-  float: left;
-  font-size: 11px;
-  text-align: left;
+.app-logo{
+    -webkit-animation: App-logo-spin infinite 20s linear;
+    animation: app-logo-spin infinite 20s linear;
+    height: 40px;
 }
-
-.newIdeaButton {
-  background: darkblue;
-  color: white;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  margin-right: 10px;
-  margin-left: 10px;
-  padding: 10px;
-}
-
-.input {
-  border: 0;
-  background: none;
-  outline: none;
-  margin-top:10px;
-  width: 140px;
-  font-size: 11px;
-}
-
-.input:focus {
-  border: solid 1px lightgrey;
-}
-
-textarea {
-  resize: none;
-  height: 90px;
-  font-size: 11px;
-}
-
-.deleteButton {
-  visibility: hidden;
-  float: right;
-  margin: 5px;
-  font-size: 14px;
-  cursor: pointer;
-  color: red;
-}
-
-.tile:hover .deleteButton {
-  visibility: visible;
-}
-.msg.red{
-  color: #C50000;
+@keyframes app-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 .cursor-ptr{
   cursor: pointer;
@@ -69,7 +22,7 @@ textarea {
   /* z-index to be over modal */
   z-index: 9999;
   position: fixed;
-  top: 50px;
+  top: 10px;
   left: 0;
   width: 100%;
 }

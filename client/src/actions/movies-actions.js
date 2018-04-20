@@ -310,6 +310,7 @@ const filterByRating = (rating) => {
 const searchMovies = (query) => {
   return dispatch => {
     dispatch(setSearchQuery(query))
+    dispatch(setPage(1))
     dispatch(fetchMovies())
   }
 }
