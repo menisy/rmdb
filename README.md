@@ -1,5 +1,3 @@
-# README
-
 # React Movie DB
 
 A simple react-redux app consuming data from a rails-api app
