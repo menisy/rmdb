@@ -52,9 +52,11 @@ class AppHeader extends Component {
 
   render(){
     let userArea
-    const { isSignedIn, attributes } = this.props.currentUser
+    const { isSignedIn, isLoading, attributes } = this.props.currentUser
     const { messages, color, transition} = this.props.notification
-    if(!isSignedIn){
+    if(isLoading){
+      userArea = null
+    }else if(!isSignedIn){
       userArea = <LoginContainer onSignIn={ this.handleSignIn }/>
     }else if(isSignedIn){
       userArea = <UserNav attributes={ attributes }
