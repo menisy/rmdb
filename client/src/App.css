@@ -2,6 +2,9 @@ body{
   padding-top: 4rem;
   background-color: #f4f4f4;
 }
+nav.fixed-top{
+  height: 4rem;
+}
 .app-logo{
     -webkit-animation: App-logo-spin infinite 20s linear;
     animation: app-logo-spin infinite 20s linear;

@@ -14,7 +14,7 @@ const setNotificationMessages = (msgs) => {
     }
   }else{
     // don't display huge errors
-    message = (msgs.length > 1000) ? sorry : msgs
+    message = (msgs.length > 1000 || msgs.length < 1) ? sorry : msgs
   }
   return {
     type: TYPES.SET_MESSAGES,
