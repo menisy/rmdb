@@ -5,6 +5,7 @@ import MoviesContainer from './containers/MoviesContainer'
 import FilterGroup from './containers/FilterGroup'
 
 class App extends Component {
+
   render() {
     return (
       <div>

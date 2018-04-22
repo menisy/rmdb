@@ -40,7 +40,7 @@ let MovieForm = props => {
                   <Field name="category_id"
                           component="select"
                           className="form-control col-12">
-                    <option value="">Select one</option>
+                    <option>Select one</option>
                     {categories.map(category => (
                       <option value={category.id} key={category.id}>
                         {category.title}

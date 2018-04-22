@@ -223,7 +223,7 @@ const submitMovieStart = () => {
         moviesServices.updateMovie(editingMovie)
         .then(() => dispatch(resetToDefaults('Movie updated successfully')))
         .catch((error) => dispatch(showError(error)))
-        } else {
+      } else {
         moviesServices.createMovie(editingMovie)
         .then(() => dispatch(resetToDefaults('Movie created successfully')))
         .catch((error) => dispatch(showError(error)))
@@ -235,7 +235,6 @@ const submitMovieStart = () => {
 export const fetchMoviesStart = () => {
   return (dispatch, getState) => {
     const movies = getState().movies
-    console.log(movies)
     dispatch(setFetshingMovies(true))
     dispatch(setLoading(true))
     moviesServices.fetchMovies(movies)
@@ -249,7 +248,7 @@ export const fetchMoviesStart = () => {
     .catch((error)=> {
       dispatch(setLoading(false))
       dispatch(
-          showNotification(error.response.data,
+          showNotification(error.response,
                             'danger'))
     })
   }
@@ -263,8 +262,8 @@ export const fetchCategoriesStart = () => {
     })
     .catch((error)=> {
       dispatch(
-          showNotification(error.response.data,
-                            'danger'))
+          showNotification('Sorry, something went wrong, please  try reloading.',
+                            'warning'))
     })
   }
 }
@@ -277,7 +276,7 @@ export const fetchRatingsStart = () => {
     })
     .catch((error)=> {
       dispatch(
-          showNotification(error.response.data,
+          showNotification(error.response,
                             'danger'))
     })
   }
@@ -293,7 +292,7 @@ export const rateMovieStart = (id, rating) => {
     })
     .catch((error)=> {
       dispatch(
-          showNotification(error.response.data,
+          showNotification(error.response,
                             'danger'))
     })
   }

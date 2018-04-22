@@ -1,6 +1,7 @@
 import arrayToSentence from 'array-to-sentence'
 
 const errorsToSentence = (errors) => {
+  console.log(errors)
   if(Array.isArray(errors)){
     return arrayToSentence(errors)
   }

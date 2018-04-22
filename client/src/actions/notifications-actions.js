@@ -4,24 +4,21 @@ import errorsToSentences from '../shared/util/errorsToSentences'
 const setNotificationMessages = (msgs) => {
   // check whether object or string
   let message
-  const sorry = 'Sorry, something went wrong!'
-  if(typeof msgs === 'object'){
-    try{
+  const sorry = 'Sorry, something went wrong! Please try reloading the page'
+  try{
+    if(typeof msgs === 'object'){
       message = errorsToSentences(msgs)
+    }else{
+      message = (msgs.length > 1000 || msgs.length < 1) ? sorry : msgs
     }
-    catch(error){
-      message = sorry
-    }
-  }else{
-    // don't display huge errors
-    message = (msgs.length > 1000 || msgs.length < 1) ? sorry : msgs
+  }catch(error){
+    message = sorry
   }
   return {
     type: TYPES.SET_MESSAGES,
     payload: message
   }
 }
-
 const setNotificationColor = (color) => {
   return {
     type: TYPES.SET_COLOR,
@@ -44,6 +41,7 @@ export const hideNotification = () => {
 
 
 export const showNotification = (messages, color) => {
+
   return dispatch => {
     dispatch(setNotificationMessages(messages))
     dispatch(setNotificationColor(color))

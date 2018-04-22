@@ -6,6 +6,7 @@ class Pagination extends Component {
 
   render(){
     const { movies, searchQuery, pages, page, all_count } = this.props.movies
+    const hide = this.props.isLoading ? "hide" : ""
     let searchResultsMsg
     if(searchQuery.trim().length > 0){
       searchResultsMsg = <div className="d-inline-block">
@@ -18,7 +19,7 @@ class Pagination extends Component {
                           </div>
     }
     return(
-      <div className="container">
+      <div className={`${hide} container`}>
           <div className="row form-inline border rounded mb-2 p-2">
             <div className="col-md-6 col-sm-12 my-1">
               <span className="font-weight-bold">

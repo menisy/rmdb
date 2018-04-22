@@ -78,8 +78,8 @@ class MoviesContainer extends Component {
     if(currentUser.isSignedIn){
       newMovieButton = <Button title="Add a new movie"
                                onToggle={this.addNewMovie}
-                               isActive={true}
-                               color={"btn-success mr-2 my-2 w-5"}
+                               isactive={true}
+                               color={"btn-success mr-md-2 mr-xs-0 my-2 w-5 w-sm-100"}
                                icon={"plus"}/>
     }
 
@@ -92,11 +92,14 @@ class MoviesContainer extends Component {
         <MovieForm  onSubmit={this.submitMovie}
                     onDismiss={this.dismissModal}/>
         <Pagination movies={this.props.movies}
-                    onPageChange={this.handlePageClick}/>
+                    onPageChange={this.handlePageClick}
+                    isLoading={this.isLoading}
+                    isErrored={this.isErrored}/>
         <MoviesList movies={movies}
                     currentUser={currentUser}
                     rateMovie={rateMovie}
                     isLoading={isLoading}
+                    isErrored={this.isErrored}
                     onEditMovie={this.editMovie}
                     onDeleteMovie={this.deleteMovie}
                     />

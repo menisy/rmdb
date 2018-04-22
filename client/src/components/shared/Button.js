@@ -8,24 +8,27 @@ class Button extends Component{
   }
 
   handleToggle = () => {
-    this.props.onToggle(this.props.toggleBool)
+    if(typeof this.props.onToggle === 'function'){
+      this.props.onToggle(this.props.toggle)
+    }
   }
 
   render (){
-    const {title, isActive, icon, color, css} = this.props
-    const active = (isActive) ? 'btn-primary' : 'btn-outline-primary'
+    const {title, isactive, icon, color, css} = this.props
+    const active = (isactive) ? 'btn-primary' : 'btn-outline-primary'
     let iconTag
     if(icon){
       iconTag = <i className={`fa fa-${icon} mr-1`} />
     }
     return (
-      <div className={`${css || ''} my-xs-1 mb-sm-1`}>
-        <div className={`nav-link btn ${active || ''}  ${color || ''}`}
-             onClick={this.handleToggle}>
+      <button onClick={this.handleToggle} className={
+        `${css || ''}  ${active || ''} ${color || ''} btn ${this.props.className || ''}`
+      } {...this.props}>
+        <div>
           {iconTag}
           {title}
         </div>
-      </div>
+      </button>
     )
   }
 }

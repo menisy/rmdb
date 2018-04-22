@@ -50,20 +50,21 @@ class FilterGroup extends Component {
     if(this.props.currentUser.isSignedIn){
       userButton = <Button  title="My Movies"
                             onToggle={this.handleMoviesSelectToggle}
-                            isActive={this.props.myMovies}
-                            toggleBool={true}
-                            css="nav-item"
+                            isactive={this.props.myMovies || ''}
+                            toggle={"true"}
+                            css={"nav-item mb-sm-1 my-xs-1 "}
                             />
     }
     const {categories, ratings, activeCategory, activeRating} = this.props
+
     return (
       <div className="filters sticky-top">
-        <nav className="nav nav-fill justify-content-center form-inline my-2">
-          <Button title="All Movies"
+        <nav className={"nav nav-fill justify-content-center form-inline my-2"}>
+          <Button title={"All Movies"}
                   onToggle={this.handleMoviesSelectToggle}
-                  isActive={!this.props.myMovies}
-                  toggleBool={false}
-                  css="nav-item"
+                  isactive={!this.props.myMovies}
+                  option={"false"}
+                  css={"nav-item mb-sm-1 my-xs-1 "}
                   />
           {userButton}
         </nav>
@@ -72,8 +73,8 @@ class FilterGroup extends Component {
                 activeItem={activeCategory}
                 handleClick={this.handleCategoryClick}
                 handleReset={this.handleCategoryReset}/>
-        <div className="mt-4"></div>
-        <Filter title="Ratings"
+        <div className={"mt-4"}></div>
+        <Filter title={"Ratings"}
                 items={ratings}
                 activeItem={activeRating}
                 handleClick={this.handleRatingClick}
