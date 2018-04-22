@@ -22,7 +22,7 @@ class Button extends Component{
     }
     return (
       <button onClick={this.handleToggle} className={
-        `${css || ''}  ${active || ''} ${color || ''} btn ${this.props.className || ''}`
+        `${css || ''}  ${active || ''} btn btn-${color || ''}  ${this.props.className || ''}`
       } {...this.props}>
         <div>
           {iconTag}

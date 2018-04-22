@@ -28,9 +28,10 @@ class Filter extends Component {
           <div className="nav-item font-weight-bold text-left ml-1 pt-1">
             {title}
           </div>
-          <Button type="button" className="btn btn-primary"
+          <Button type="button" className="navbar-toggler"
                   data-toggle="collapse" data-target={`.${title}-collapse`}
-                  icon="filter">
+                  icon="filter"
+                  color="primary">
           </Button>
         </div>
         <div className={`${title}-collapse collapse navbar-collapse w-100`}>

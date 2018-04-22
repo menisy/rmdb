@@ -21,10 +21,10 @@ class EditMenu extends Component{
     return(
         <nav className="nav justify-content-center nav-fill nav-justified">
           <Button icon="edit"
-                  color="btn-outline-warning mx-2"
+                  color=" btn-outline-warning mx-2"
                   onToggle={this.handleEdit}/>
           <Button icon="trash"
-                  color="btn-outline-danger mx-2"
+                  color=" btn-outline-danger mx-2"
                   onToggle={this.handleDelete}/>
         </nav>
       )
