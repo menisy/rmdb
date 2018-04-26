@@ -53,7 +53,7 @@ class MovieItem extends Component {
               <strong>Category:</strong> {movie.category.title}
             </li>
             <li className="list-group-item">
-              Users rating
+              Users rating ({movie.ratings_count})
               <Rating key={movie.id} id={movie.id} rating={movie.average_rating} editable={false}/>
             </li>
             {userRating}

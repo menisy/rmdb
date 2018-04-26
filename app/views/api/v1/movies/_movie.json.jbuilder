@@ -8,6 +8,8 @@ else
   0
 end
 
+json.ratings_count movie.ratings.count
+
 json.category movie.category, :title, :id
 
 json.user movie.user, :nickname
